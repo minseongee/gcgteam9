@@ -64,28 +64,67 @@
         section.appendChild(el('p', 'muted small', "'" + type.name + "' 타입의 평가 버튼이에요. 메뉴 타입마다 버튼이 달라져요."));
 
         const chips = el('div', 'chip-row');
+        const chipButtons = [];
+
+        // 역할: 모든 칩의 선택 모양을 state.tagIds에 맞춘다
+        // 입력: 없음
+        // 출력: 없음
+        function paint() {
+            for (let i = 0; i < chipButtons.length; i++) {
+                const isOn = state.tagIds.includes(type.tags[i].id);
+                chipButtons[i].classList.toggle('is-selected', isOn);
+                chipButtons[i].setAttribute('aria-pressed', String(isOn));
+            }
+        }
+
         for (let i = 0; i < type.tags.length; i++) {
             const tag = type.tags[i];
             const chip = el('button', 'chip', tag.label);
             chip.type = 'button';
-            const isOn = state.tagIds.includes(tag.id);
-            chip.classList.toggle('is-selected', isOn);
-            chip.setAttribute('aria-pressed', String(isOn));
             chip.addEventListener('click', function () {
                 const index = state.tagIds.indexOf(tag.id);
-                if (index === -1) {
-                    state.tagIds.push(tag.id);
-                } else {
+                if (index !== -1) {
                     state.tagIds.splice(index, 1);
+                } else {
+                    // 반대 버튼이 켜져 있으면 끄고 이 버튼을 켠다 (예: '연해요'를 누르면 '진해요'가 꺼짐)
+                    const oppositeId = findOppositeId(type, tag);
+                    state.tagIds = state.tagIds.filter(function (id) {
+                        return id !== oppositeId;
+                    });
+                    state.tagIds.push(tag.id);
                 }
-                const nowOn = index === -1;
-                chip.classList.toggle('is-selected', nowOn);
-                chip.setAttribute('aria-pressed', String(nowOn));
+                paint();
             });
+            chipButtons.push(chip);
             chips.appendChild(chip);
         }
+        paint();
         section.appendChild(chips);
         return section;
+    }
+
+    // 역할: 같은 타입 안에서 뜻이 반대인 평가 버튼의 id를 찾는다
+    // 입력: type - 메뉴 타입 { id, name, tags }, tag - 누른 버튼 { id, label }
+    // 출력: 반대 버튼 id, 없으면 null
+    function findOppositeId(type, tag) {
+        // ponytail: 버튼 이름으로 짝을 짓는다. data.js의 이름을 바꾸면 여기도 고쳐야 함 (data.md에 짝 정보를 두면 없앨 수 있음)
+        const pairs = [
+            ['진해요', '연해요'],
+            ['달아요', '덜 달아요']
+        ];
+        for (let i = 0; i < pairs.length; i++) {
+            const at = pairs[i].indexOf(tag.label);
+            if (at === -1) {
+                continue;
+            }
+            const oppositeLabel = pairs[i][1 - at];
+            for (let j = 0; j < type.tags.length; j++) {
+                if (type.tags[j].label === oppositeLabel) {
+                    return type.tags[j].id;
+                }
+            }
+        }
+        return null;
     }
 
     // 역할: 한줄평 입력칸과 글자 수 표시를 만든다
