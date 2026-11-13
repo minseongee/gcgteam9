@@ -816,6 +816,12 @@ select.input {
     margin-top: 4px;
 }
 
+.cafe-map-buttons .btn {
+    padding: 0 8px;
+    font-size: 14px;
+    white-space: nowrap;
+}
+
 .cafe-menu-right {
     display: flex;
     flex-shrink: 0;
@@ -855,16 +861,17 @@ select.input {
 
 .menu-summary {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: 16px;
 }
 
 .menu-score {
     display: flex;
+    flex: 1 0 84px;
     flex-direction: column;
     align-items: center;
     gap: 4px;
-    min-width: 84px;
 }
 
 .menu-score-number {
@@ -885,7 +892,7 @@ select.input {
 
 .menu-bars {
     display: flex;
-    flex: 1;
+    flex: 999 1 240px;
     flex-direction: column;
     gap: 8px;
     min-width: 0;
@@ -947,6 +954,11 @@ select.input {
 
 .menu-actions {
     grid-template-columns: 1fr 2fr;
+}
+
+.menu-actions .btn {
+    padding: 0 8px;
+    white-space: nowrap;
 }
 
 /* 리뷰 쓰기 */
@@ -1379,6 +1391,11 @@ select.input {
 
 .rec-budget-input {
     width: 140px;
+}
+
+.rec-quick .chip {
+    padding: 0 10px;
+    font-size: 13px;
 }
 
 .rec-area button {

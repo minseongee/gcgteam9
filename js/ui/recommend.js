@@ -171,7 +171,7 @@
         budgetRow.appendChild(budgetInput);
         budgetRow.appendChild(el('span', '', '원 이하'));
         budgetBox.appendChild(budgetRow);
-        budgetChips = el('div', 'chip-row');
+        budgetChips = el('div', 'chip-row rec-quick');
         budgetBox.appendChild(budgetChips);
         budgetBox.appendChild(el('span', 'muted small', '비워 두면 가격은 따지지 않아요.'));
         form.appendChild(budgetBox);
