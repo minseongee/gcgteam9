@@ -839,6 +839,10 @@ select.input {
 }
 
 /* 메뉴 상세 */
+.menu-fav-btn {
+    color: var(--accent);
+}
+
 .menu-info {
     display: flex;
     flex-direction: column;

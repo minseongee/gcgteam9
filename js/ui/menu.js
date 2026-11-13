@@ -1,9 +1,46 @@
-// 메뉴 상세 화면: 메뉴 정보, 평점·평가 버튼 비율, 리뷰 목록, 비교함 담기·리뷰 쓰기 (menu.html?id=3)
-// 부르는 기능 함수: Cafes.getMenu, Reviews.getReviewSummary, Compare.addToBox, Auth.getCurrentUser
+// 메뉴 상세 화면: 메뉴 정보, 즐겨찾기, 평점·평가 버튼 비율, 리뷰 목록, 비교함 담기·리뷰 쓰기 (menu.html?id=3)
+// 부르는 기능 함수: Cafes.getMenu, Reviews.getReviewSummary, Compare.addToBox,
+//                   Account.isFavorite, Account.toggleFavorite, Auth.getCurrentUser
 
 (function () {
     const app = document.getElementById('app');
     const menuId = getQueryNumber('id');
+
+    // 역할: 헤더 오른쪽 즐겨찾기(하트) 버튼을 만든다. 로그인 안 했으면 누를 때 로그인 화면으로 보낸다
+    // 입력: header - renderHeader가 돌려준 요소
+    // 출력: 없음
+    function addFavoriteButton(header) {
+        const actions = el('div', 'header-actions');
+        const button = el('button', 'icon-btn menu-fav-btn');
+        button.type = 'button';
+
+        // 역할: 하트 모양과 읽어 줄 글자를 지금 상태로 맞춘다
+        // 입력: isOn - 즐겨찾기 됐는지
+        // 출력: 없음
+        function paint(isOn) {
+            button.textContent = '';
+            button.appendChild(icon(isOn ? 'heart-filled' : 'heart'));
+            button.setAttribute('aria-pressed', String(isOn));
+            button.setAttribute('aria-label', isOn ? '즐겨찾기에서 빼기' : '즐겨찾기에 추가');
+        }
+
+        paint(Account.isFavorite('menu', menuId));
+        button.addEventListener('click', function () {
+            if (Auth.getCurrentUser() === null) {
+                location.href = loginUrl();
+                return;
+            }
+            try {
+                const isOn = Account.toggleFavorite('menu', menuId);
+                paint(isOn);
+                showNotice(isOn ? '즐겨찾기에 추가했어요' : '즐겨찾기에서 뺐어요');
+            } catch (e) {
+                showError(e.message);
+            }
+        });
+        actions.appendChild(button);
+        header.appendChild(actions);
+    }
 
     // 역할: 메뉴 정보 부분(카페 링크·타입, 이름, 가격, 옵션)을 그린다
     // 입력: menu - MenuItem
@@ -146,12 +183,13 @@
     // 입력: 없음
     // 출력: 없음
     function render() {
-        renderHeader('메뉴 상세', true);
+        const header = renderHeader('메뉴 상세', true);
         renderTabBar('home');
         try {
             const menu = Cafes.getMenu(menuId);
             const summary = Reviews.getReviewSummary(menuId);
             document.title = menu.name + ' · 메뉴 상세';
+            addFavoriteButton(header);
             renderInfo(menu);
             renderSummary(summary);
             renderReviews(summary);

@@ -27,7 +27,7 @@
     function renderFavorites(box, favorites) {
         box.textContent = '';
         if (favorites.cafes.length === 0 && favorites.menus.length === 0) {
-            box.appendChild(el('p', 'empty', '아직 즐겨찾기가 없어요. 카페 상세에서 하트를 눌러 보세요.'));
+            box.appendChild(el('p', 'empty', '아직 즐겨찾기가 없어요. 카페·메뉴 상세에서 하트를 눌러 보세요.'));
             return;
         }
         const parts = [
