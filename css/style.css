@@ -1256,3 +1256,86 @@ select.input {
     background: var(--card);
     border: 2px solid var(--accent);
 }
+
+/* 비교 */
+.compare-title {
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.compare-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    min-height: 44px;
+    padding: 0 0 0 12px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--card);
+    font-size: 13px;
+}
+
+.compare-remove {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--muted);
+}
+
+.compare-add {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 14px;
+    border: 1px dashed var(--accent);
+    border-radius: 10px;
+    font-size: 13px;
+    text-decoration: none;
+}
+
+.compare-table {
+    table-layout: fixed;
+}
+
+.compare-table th[scope="row"] {
+    width: 96px;
+    background: var(--head-bg);
+    color: var(--muted);
+    font-weight: 500;
+    text-align: left;
+}
+
+.compare-table thead th:first-child {
+    width: 96px;
+    background: var(--head-bg);
+}
+
+.compare-menu-head {
+    padding: 8px;
+    font-weight: 700;
+}
+
+.compare-menu-name {
+    display: block;
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.compare-table td.is-best {
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-weight: 700;
+}
+
+.compare-note {
+    line-height: 1.5;
+}
+
+.compare-go {
+    margin-top: 12px;
+}
