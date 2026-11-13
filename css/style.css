@@ -1339,3 +1339,105 @@ select.input {
 .compare-go {
     margin-top: 12px;
 }
+
+/* 추천 */
+.rec-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 18px 16px;
+    border-radius: 16px;
+}
+
+.rec-question {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    min-width: 0;
+}
+
+.rec-q {
+    padding: 0;
+    margin-bottom: 0;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.rec-q-note {
+    font-weight: 400;
+}
+
+.rec-budget {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 15px;
+}
+
+.rec-budget-input {
+    width: 140px;
+}
+
+.rec-area button {
+    font-size: 14px;
+}
+
+.rec-card {
+    display: flex;
+    gap: 14px;
+}
+
+.rec-card.is-first {
+    border: 2px solid var(--accent);
+}
+
+.rec-rank {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.rec-card.is-first .rec-rank {
+    background: var(--accent);
+    color: #FFFFFF;
+}
+
+.rec-body {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+}
+
+.rec-name {
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.rec-cafe {
+    font-weight: 400;
+}
+
+.rec-line {
+    font-size: 13px;
+}
+
+.rec-reason {
+    padding: 4px 8px;
+    border-radius: 6px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-size: 12px;
+    line-height: 1.5;
+}
