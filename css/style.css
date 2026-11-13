@@ -1121,3 +1121,55 @@ select.input {
     min-height: 44px;
     font-size: 14px;
 }
+
+/* 사장 관리 */
+.owner-title {
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.owner-field {
+    font-size: 13px;
+    color: var(--muted);
+}
+
+.owner-field .input {
+    color: var(--text);
+    font-weight: 400;
+}
+
+.owner-row {
+    display: grid;
+    grid-template-columns: 1fr 96px 64px;
+    gap: 8px;
+}
+
+.owner-menu-name {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.owner-price .input {
+    padding: 0 8px;
+    font-size: 14px;
+    text-align: right;
+}
+
+.owner-change {
+    min-height: 44px;
+    padding: 0;
+    font-size: 13px;
+}
+
+.owner-add {
+    padding: 16px;
+    border: 1px dashed var(--accent);
+    border-radius: var(--radius);
+    background: var(--card);
+}
+
+.owner-pair {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+}
