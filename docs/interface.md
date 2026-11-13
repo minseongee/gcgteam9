@@ -67,14 +67,14 @@
 
 | 함수 | 입력 | 출력 | 권한 |
 | --- | --- | --- | --- |
-| `Reviews.getReviewSummary(menuId)` | 메뉴 id | `{ menuId, avgRating, reviewCount, tagStats: TagStat[], reviews: [{ id, userId, nickname, rating, comment, tags: [{ id, label }], createdAt }] }` | 없음 |
+| `Reviews.getReviewSummary(menuId)` | 메뉴 id | `{ menuId, avgRating, reviewCount, tagStats: TagStat[], reviews: [{ id, userId, nickname, rating, comment, tags: [{ id, label }], createdAt, isSample }] }` | 없음 |
 | `Reviews.getMyReview(menuId)` | 메뉴 id | 로그인한 회원이 그 메뉴에 쓴 리뷰(위 `reviews[]` 한 개 모양) 또는 `null` | 로그인 안 했으면 `null` 반환 |
 | `Reviews.saveReview(menuId, rating, comment, tagIds)` | `rating`: 1~5 정수, `comment`: 0~50자 문자열, `tagIds`: 그 메뉴 타입의 평가 버튼 id 배열(0개 이상) | 저장된 리뷰 | 회원 |
 | `Reviews.deleteReview(reviewId)` (P1) | 리뷰 id | 없음(`undefined`) | 회원, 본인 리뷰만 |
 | `Reviews.getMyReviews()` (P1) | 없음 | `[{ review, menu: MenuItem }]` 최신순 (마이페이지용) | 회원 |
 
 - `tagStats`는 그 메뉴 타입의 모든 평가 버튼을 `percent` 높은 순으로 담습니다(0%인 버튼도 포함).
-- `reviews`는 최신순입니다.
+- `reviews`는 최신순입니다. `isSample`은 시연용 예시 리뷰면 `true`이며, 화면은 이 값으로 '예시' 표시를 붙입니다. (`getMyReview`가 돌려주는 리뷰도 같은 모양)
 - 같은 회원이 같은 메뉴에 다시 `saveReview`하면 **새로 만들지 않고 기존 리뷰를 고칩니다.** (회원 1명당 메뉴 1개에 리뷰 1개)
 
 ## 4. Compare — C. 비교·추천 (`js/compare.js`)
@@ -84,7 +84,8 @@
 | `Compare.compareMenus(menuIds)` | 같은 타입 메뉴 id 2~4개 | `{ typeId, typeName, tags: [{ id, label }], rows: [{ menu: MenuItem, tagPercents: { [tagId]: percent } }], best: { price: menuId, rating: menuId, reviewCount: menuId, [tagId]: menuId } }` | 없음 |
 | `Compare.recommend(condition)` | `{ typeId: 숫자(필수), budget: 숫자 또는 null, tagIds: 숫자 배열(0~3개), area: 'all' \| 'campus' \| 'nearby' }` | `[{ rank: 1, menu: MenuItem, score: 0.83, reason: '예산 4,000원 이하 · 평점 4.6 (리뷰 12개) · \'고소해요\' 75%' }]` 최대 3개, 점수 높은 순 | 없음 |
 
-- `best`는 항목별 1위 메뉴 id입니다(가격은 낮을수록, 나머지는 높을수록 1위). 같으면 앞의 메뉴. 평점이 모두 `null`이면 그 항목은 넣지 않습니다.
+- `best`는 항목별 1위 메뉴 id입니다(가격은 낮을수록, 나머지는 높을수록 1위). 1위가 여럿이면 앞의 메뉴.
+- 평점이 모두 `null`이거나, **모든 메뉴의 값이 같으면(모두 0 포함)** 그 항목은 `best`에 넣지 않습니다. 강조할 1위가 없기 때문입니다.
 - 비교함(메뉴를 최대 4개 담아 두는 곳)은 6절의 `Compare.getBox` / `addToBox` / `removeFromBox`로 관리합니다.
 
 ### 추천 점수 계산
@@ -97,6 +98,8 @@
    - **점수 = 0.6 × (보정 평점 ÷ 5) + 0.4 × 선호 일치율** (버튼을 안 골랐으면 점수 = 보정 평점 ÷ 5)
 3. 점수 높은 순으로 3개를 고르고, 소수 둘째 자리까지 반올림합니다.
 4. `reason`은 계산에 쓴 값을 그대로 이어 붙입니다: 예산 조건(있을 때) · 평점과 리뷰 수 · 고른 버튼 중 비율이 가장 높은 것.
+   - 고른 버튼 중 가장 높은 비율이 0%이면 버튼 부분은 넣지 않습니다.
+   - 리뷰가 없는 메뉴는 평점 부분을 `아직 리뷰 없음`으로 씁니다. 예: `예산 4,000원 이하 · 아직 리뷰 없음`
 - 가중치 0.6 / 0.4와 보정 상수 5는 초깃값이며, 테스트 후 바꾸면 이 문서를 먼저 고칩니다.
 
 ## 5. Account — D. 계정·즐겨찾기·운영 (`js/account.js`)
@@ -110,7 +113,7 @@
 | `Account.isFavorite(targetType, targetId)` (P1) | | `true` / `false` (로그인 안 했으면 `false`) | 없음 |
 | `Account.getFavorites()` (P1) | 없음 | `{ cafes: CafeItem[], menus: MenuItem[] }` | 회원 |
 | `Account.getMyCafe()` | 없음 | 로그인한 사장의 카페 `CafeItem` | 사장 |
-| `Account.updateCafe(cafeId, info)` (P1) | `info`: `{ name, locationText, openHours }` | 수정된 `CafeItem` | 사장, 본인 카페만 |
+| `Account.updateCafe(cafeId, info)` (P1) | `info`: `{ name, locationText, openHours }`. `name`은 앞뒤 공백을 지운 뒤 1자 이상(비면 오류), `locationText`·`openHours`는 비어도 됨 | 수정된 `CafeItem` | 사장, 본인 카페만 |
 | `Account.addMenu(cafeId, menu)` | `menu`: `{ name, typeId, price, options }` | 새 `MenuItem` | 사장, 본인 카페만 |
 | `Account.updatePrice(menuId, price)` | `price`: 0보다 큰 정수 | 수정된 `MenuItem` | 사장, 본인 카페 메뉴만 |
 
@@ -163,6 +166,7 @@
 | 로그인 실패 | `아이디 또는 비밀번호가 맞지 않습니다` |
 | 가격 형식 | `가격은 0보다 큰 숫자로 써 주세요` |
 | 메뉴 이름 없음 | `메뉴 이름을 입력해 주세요` |
+| 카페 이름 없음 | `카페 이름을 입력해 주세요` |
 
 ## 8. 화면 ↔ 함수 연결표
 
