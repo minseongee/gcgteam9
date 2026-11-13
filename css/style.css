@@ -1173,3 +1173,86 @@ select.input {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px;
 }
+
+/* 지도 */
+.map-scroll {
+    position: relative;
+    height: calc(100vh - 250px);
+    min-height: 320px;
+    margin: 0 -20px;
+    overflow: auto;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    background: #F1ECE4;
+}
+
+/* 지도는 화면보다 크게 두고 상자 안에서 밀어 본다 */
+.map-canvas {
+    position: relative;
+    width: 640px;
+}
+
+.map-image {
+    display: block;
+    width: 100%;
+}
+
+.map-placeholder {
+    height: 760px;
+    padding: 20px;
+    background: #E9E2D8;
+    color: var(--muted);
+    font-size: 15px;
+}
+
+.map-layer {
+    position: absolute;
+    inset: 0;
+}
+
+/* 핀 끝(아래 뾰족한 곳)이 좌표에 오도록 핀 높이만큼 위로 올림 */
+.map-pin {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    min-width: 44px;
+    min-height: 44px;
+    text-decoration: none;
+    transform: translate(-50%, -36px);
+}
+
+.map-pin-label {
+    padding: 2px 8px;
+    border: 1px solid #D9CFC4;
+    border-radius: 999px;
+    background: var(--card);
+    color: var(--text);
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.map-keys {
+    display: flex;
+    gap: 12px;
+}
+
+.map-key {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.map-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--accent);
+}
+
+.map-dot.is-outline {
+    background: var(--card);
+    border: 2px solid var(--accent);
+}
