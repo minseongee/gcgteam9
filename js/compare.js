@@ -3,6 +3,18 @@
 // 메뉴 정보는 Cafes.getMenu, 평가 버튼 비율은 Reviews.getReviewSummary로 얻습니다.
 
 const Compare = {
+    // ───────── 추천 점수 상수 (interface.md 4절, 테스트 후 바꾸면 문서를 먼저 고침) ─────────
+    // '파일 하나는 전역 객체 하나만' 규칙 때문에 따로 const를 만들지 않고 Compare 안에 둡니다.
+
+    // 점수에서 보정 평점이 차지하는 비중
+    WEIGHT_RATING: 0.6,
+    // 점수에서 선호 일치율이 차지하는 비중
+    WEIGHT_PREFERENCE: 0.4,
+    // 보정 평점 상수 C: 리뷰가 적은 메뉴의 평점을 타입 평균 쪽으로 끌어당기는 정도
+    PRIOR_COUNT: 5,
+    // 같은 타입에 리뷰가 하나도 없을 때 쓰는 타입 평균 평점
+    DEFAULT_MEAN: 3,
+
     // ───────── 내부 함수 (Compare 안에서만 사용) ─────────
 
     // 역할: 비교표 행들 중 한 항목의 1위 메뉴를 고른다
@@ -152,7 +164,220 @@ const Compare = {
             rows: rows,
             best: best
         };
-    }
+    },
 
-    // recommend: 2-7에서 추가
+    // ───────── 추천 (interface.md 4절 '추천 점수 계산') ─────────
+
+    // 역할: [1단계] 조건에 맞는 메뉴만 남긴다
+    //       타입이 condition.typeId와 같고,
+    //       budget이 있으면 가격 ≤ budget,
+    //       area가 'all'이 아니면 카페 위치 = area
+    // 입력: condition - recommend에 들어온 조건 (검사를 마친 값)
+    // 출력: MenuItem[] (Cafes.searchMenus의 평점순)
+    // 오류: 없음
+    filterMenus: function (condition) {
+        const menus = Cafes.searchMenus('', condition.typeId, 'rating');
+        const result = [];
+        for (let i = 0; i < menus.length; i++) {
+            if (condition.budget !== null && menus[i].price > condition.budget) {
+                continue;
+            }
+            if (condition.area !== 'all' && menus[i].area !== condition.area) {
+                continue;
+            }
+            result.push(menus[i]);
+        }
+        return result;
+    },
+
+    // 역할: 메뉴 하나의 별점 합을 구한다
+    // 입력: summary - Reviews.getReviewSummary의 결과
+    // 출력: 별점 합 (리뷰가 없으면 0)
+    // 오류: 없음
+    sumRatings: function (summary) {
+        let sum = 0;
+        for (let i = 0; i < summary.reviews.length; i++) {
+            sum += summary.reviews[i].rating;
+        }
+        return sum;
+    },
+
+    // 역할: [2단계 준비] 타입 평균 평점 m을 구한다
+    //       m = (같은 타입 모든 리뷰의 별점 합) ÷ (같은 타입 모든 리뷰 수)
+    //       리뷰가 하나도 없으면 m = DEFAULT_MEAN(3)
+    //       (예산·위치로 걸러 내기 전, 그 타입 전체 메뉴의 리뷰로 계산)
+    // 입력: typeId - 메뉴 타입 id
+    // 출력: m (숫자)
+    // 오류: 없음
+    calcTypeMean: function (typeId) {
+        const menus = Cafes.searchMenus('', typeId, 'rating');
+        let sum = 0;
+        let count = 0;
+        for (let i = 0; i < menus.length; i++) {
+            const summary = Reviews.getReviewSummary(menus[i].id);
+            sum += Compare.sumRatings(summary);
+            count += summary.reviews.length;
+        }
+        if (count === 0) {
+            return Compare.DEFAULT_MEAN;
+        }
+        return sum / count;
+    },
+
+    // 역할: [2단계] 보정 평점을 구한다
+    //       보정 평점 = (C × m + 평점 합) ÷ (C + n)
+    //       C = PRIOR_COUNT(5), m = 타입 평균 평점, n = 그 메뉴의 리뷰 수
+    //       리뷰가 적을수록 m에 가깝고, 많을수록 그 메뉴의 실제 평균에 가까워진다
+    // 입력: ratingSum - 그 메뉴의 별점 합, n - 그 메뉴의 리뷰 수, m - 타입 평균 평점
+    // 출력: 보정 평점 (1~5 사이 숫자)
+    // 오류: 없음
+    calcAdjustedRating: function (ratingSum, n, m) {
+        return (Compare.PRIOR_COUNT * m + ratingSum) / (Compare.PRIOR_COUNT + n);
+    },
+
+    // 역할: [3단계] 선호 일치율을 구한다
+    //       선호 일치율 = (고른 버튼들의 percent 합 ÷ 고른 버튼 수) ÷ 100
+    //       버튼을 안 골랐으면 0
+    // 입력: tagStats - Reviews.getReviewSummary의 tagStats, tagIds - 고른 버튼 id 배열
+    // 출력: 0~1 사이 숫자
+    // 오류: 없음
+    calcPreference: function (tagStats, tagIds) {
+        if (tagIds.length === 0) {
+            return 0;
+        }
+        let sum = 0;
+        for (let i = 0; i < tagStats.length; i++) {
+            if (tagIds.indexOf(tagStats[i].tagId) !== -1) {
+                sum += tagStats[i].percent;
+            }
+        }
+        return sum / tagIds.length / 100;
+    },
+
+    // 역할: [4단계] 점수를 구한다
+    //       버튼을 골랐으면  점수 = WEIGHT_RATING(0.6) × (보정 평점 ÷ 5) + WEIGHT_PREFERENCE(0.4) × 선호 일치율
+    //       버튼을 안 골랐으면 점수 = 보정 평점 ÷ 5
+    // 입력: adjusted - 보정 평점, preference - 선호 일치율, hasTags - 버튼을 골랐는지
+    // 출력: 0~1 사이 숫자 (반올림 전)
+    // 오류: 없음
+    calcScore: function (adjusted, preference, hasTags) {
+        if (!hasTags) {
+            return adjusted / 5;
+        }
+        return Compare.WEIGHT_RATING * (adjusted / 5) + Compare.WEIGHT_PREFERENCE * preference;
+    },
+
+    // 역할: 추천 이유 문구를 만든다 (계산에 쓴 값을 ' · '로 이어 붙임)
+    //       예: "예산 4,000원 이하 · 평점 4.6 (리뷰 12개) · '고소해요' 75%"
+    //       예산 부분은 budget이 있을 때만, 버튼 부분은 고른 버튼 중 비율이 가장 높은 것 하나만
+    //       (비율이 같으면 먼저 고른 버튼), 리뷰가 없으면 '리뷰 없음'
+    // 입력: condition - 검사를 마친 조건, menu - MenuItem, tagStats - 그 메뉴의 tagStats
+    // 출력: 문자열
+    // 오류: 없음
+    makeReason: function (condition, menu, tagStats) {
+        const parts = [];
+        if (condition.budget !== null) {
+            parts.push('예산 ' + condition.budget.toLocaleString('ko-KR') + '원 이하');
+        }
+        if (menu.avgRating === null) {
+            parts.push('리뷰 없음');
+        } else {
+            parts.push('평점 ' + menu.avgRating.toFixed(1) + ' (리뷰 ' + menu.reviewCount + '개)');
+        }
+        let bestTag = null;
+        for (let i = 0; i < condition.tagIds.length; i++) {
+            for (let j = 0; j < tagStats.length; j++) {
+                if (tagStats[j].tagId === condition.tagIds[i]) {
+                    if (bestTag === null || tagStats[j].percent > bestTag.percent) {
+                        bestTag = tagStats[j];
+                    }
+                }
+            }
+        }
+        if (bestTag !== null) {
+            parts.push('\'' + bestTag.label + '\' ' + bestTag.percent + '%');
+        }
+        return parts.join(' · ');
+    },
+
+    // 역할: 조건에 맞는 메뉴를 점수 순으로 최대 3개 추천한다
+    // 입력: condition - { typeId: 숫자(필수), budget: 숫자 또는 null,
+    //                    tagIds: 숫자 배열(0~3개, 그 타입 버튼 + 공통 버튼), area: 'all' | 'campus' | 'nearby' }
+    //       (budget이 없으면 null, tagIds가 없으면 [], area가 없으면 'all'로 봄. 같은 버튼 id가 겹치면 하나로 셈)
+    // 출력: [{ rank, menu: MenuItem, score, reason }] 점수 높은 순 최대 3개 (점수는 소수 둘째 자리까지)
+    //       점수가 같으면 평점순(Cafes.searchMenus 'rating') 앞의 메뉴가 먼저. 맞는 메뉴가 없으면 []
+    // 오류: '메뉴 타입을 골라 주세요' / '원하는 맛은 3개까지 고를 수 있어요'
+    //       '이 메뉴에서 고를 수 없는 평가 버튼입니다' / '가격은 0보다 큰 숫자로 써 주세요'(예산)
+    recommend: function (condition) {
+        let tags = null;
+        const types = Cafes.getMenuTypes();
+        for (let i = 0; i < types.length; i++) {
+            if (types[i].id === condition.typeId) {
+                tags = types[i].tags;
+            }
+        }
+        if (tags === null) {
+            throw new Error('메뉴 타입을 골라 주세요');
+        }
+
+        const tagIds = [];
+        const inputTagIds = Array.isArray(condition.tagIds) ? condition.tagIds : [];
+        for (let i = 0; i < inputTagIds.length; i++) {
+            if (tagIds.indexOf(inputTagIds[i]) === -1) {
+                tagIds.push(inputTagIds[i]);
+            }
+        }
+        if (tagIds.length > 3) {
+            throw new Error('원하는 맛은 3개까지 고를 수 있어요');
+        }
+        for (let i = 0; i < tagIds.length; i++) {
+            let allowed = false;
+            for (let j = 0; j < tags.length; j++) {
+                if (tags[j].id === tagIds[i]) {
+                    allowed = true;
+                }
+            }
+            if (!allowed) {
+                throw new Error('이 메뉴에서 고를 수 없는 평가 버튼입니다');
+            }
+        }
+
+        let budget = null;
+        if (condition.budget !== null && condition.budget !== undefined) {
+            if (typeof condition.budget !== 'number' || !(condition.budget > 0)) {
+                throw new Error('가격은 0보다 큰 숫자로 써 주세요');
+            }
+            budget = condition.budget;
+        }
+        const area = condition.area === undefined ? 'all' : condition.area;
+        const clean = { typeId: condition.typeId, budget: budget, tagIds: tagIds, area: area };
+
+        const m = Compare.calcTypeMean(clean.typeId);
+        const menus = Compare.filterMenus(clean);
+        const scored = [];
+        for (let i = 0; i < menus.length; i++) {
+            const summary = Reviews.getReviewSummary(menus[i].id);
+            const adjusted = Compare.calcAdjustedRating(Compare.sumRatings(summary), summary.reviews.length, m);
+            const preference = Compare.calcPreference(summary.tagStats, clean.tagIds);
+            scored.push({
+                menu: menus[i],
+                rawScore: Compare.calcScore(adjusted, preference, clean.tagIds.length > 0),
+                reason: Compare.makeReason(clean, menus[i], summary.tagStats)
+            });
+        }
+        scored.sort(function (a, b) {
+            return b.rawScore - a.rawScore;
+        });
+
+        const result = [];
+        for (let i = 0; i < scored.length && i < 3; i++) {
+            result.push({
+                rank: i + 1,
+                menu: scored[i].menu,
+                score: Math.round(scored[i].rawScore * 100) / 100,
+                reason: scored[i].reason
+            });
+        }
+        return result;
+    }
 };
