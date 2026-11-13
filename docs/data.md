@@ -61,6 +61,9 @@
 | `id` | 숫자 | |
 | `typeId` | 숫자 또는 `null` | 어느 메뉴 타입의 버튼인지. `null`이면 **모든 타입 공통** 버튼 |
 | `label` | 문자열 | 예: `'산미가 강해요'` |
+| `oppositeId` | 숫자 또는 `null` | 뜻이 반대인 버튼의 `id` (예: 진해요 ↔ 연해요). 두 버튼이 **서로를** 가리킵니다. 반대 버튼이 없으면 `null` |
+
+- 반대인 두 버튼은 리뷰 하나(`reviews.tagIds`)나 추천 조건 하나에 **함께 들어갈 수 없습니다.**
 
 ### menus — 메뉴
 
@@ -106,6 +109,7 @@
 users 1 ─── N reviews N ─── 1 menus N ─── 1 cafes
 users 1 ─── N favorites                 menus N ─── 1 menuTypes 1 ─── N evalTags
 users 1 ─── 0..1 cafes (사장 = ownerId)  reviews.tagIds ─── evalTags.id (여러 개)
+                                         evalTags.oppositeId ─── evalTags.id (반대 버튼, 0..1)
 ```
 
 ## 4. 메뉴 타입과 평가 버튼 (초안 — 조사 후 확정)
@@ -122,6 +126,7 @@ Notion '기능별 상세'에 따라 아메리카노·카페라떼처럼 에스�
 | 공통 (`typeId: null`) | 모든 타입 | 17: 양이 많아요 · 18: 가성비 좋아요 |
 
 - 리뷰 쓰기 화면에는 **그 메뉴 타입의 버튼 + 공통 버튼**이 나옵니다.
+- 반대 버튼 짝(`oppositeId`): **3 ↔ 4**(진해요·연해요), **6 ↔ 7**(달아요·덜 달아요), **10 ↔ 11**(진해요·연해요). 나머지 버튼은 `null`.
 
 ## 5. 지도 기준점 `MAP_BOUNDS`
 
@@ -153,7 +158,9 @@ const SEED_DATA = {
         // … 4절 표대로
     ],
     evalTags: [
-        { id: 1, typeId: 1, label: '산미가 강해요' }
+        { id: 1, typeId: 1, label: '산미가 강해요', oppositeId: null },
+        { id: 3, typeId: 1, label: '진해요', oppositeId: 4 },
+        { id: 4, typeId: 1, label: '연해요', oppositeId: 3 }
         // … 4절 표대로
     ],
     menus: [

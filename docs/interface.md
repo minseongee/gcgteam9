@@ -52,7 +52,7 @@
 | `Cafes.searchMenus(keyword, typeId, sort)` | `keyword`: 메뉴 이름에 포함된 글자(빈 문자열이면 전체), `typeId`: 숫자 또는 `null`(전체), `sort`: `'rating'` \| `'price'` \| `'reviews'` | `MenuItem[]` | 없음 |
 | `Cafes.getMenusByType()` | 없음 | `[{ typeId, typeName, menus: MenuItem[] }]` 각 타입 안은 평점 높은 순 (홈 '메뉴 목록'용) | 없음 |
 | `Cafes.getMenu(menuId)` | 메뉴 id | `MenuItem` | 없음 |
-| `Cafes.getMenuTypes()` | 없음 | `[{ id, name, tags: [{ id, label }] }]` 각 타입의 평가 버튼(공통 버튼 포함) | 없음 |
+| `Cafes.getMenuTypes()` | 없음 | `[{ id, name, tags: [{ id, label, oppositeId }] }]` 각 타입의 평가 버튼(공통 버튼 포함). `oppositeId`는 뜻이 반대인 버튼 id 또는 `null` | 없음 |
 | `Cafes.getMapPins()` (P1) | 없음 | `[{ cafeId, name, area, x, y }]` `x`, `y`는 지도 이미지 위 위치(%, 0~100). 지도 밖이면 목록에서 뺌 | 없음 |
 | `Cafes.getMapLinks(cafeId)` (P1) | 카페 id | `{ view: 'https://map.kakao.com/link/map/카페이름,위도,경도', route: 'https://map.kakao.com/link/to/카페이름,위도,경도' }` | 없음 |
 
@@ -69,20 +69,21 @@
 | --- | --- | --- | --- |
 | `Reviews.getReviewSummary(menuId)` | 메뉴 id | `{ menuId, avgRating, reviewCount, tagStats: TagStat[], reviews: [{ id, userId, nickname, rating, comment, tags: [{ id, label }], createdAt, isSample }] }` | 없음 |
 | `Reviews.getMyReview(menuId)` | 메뉴 id | 로그인한 회원이 그 메뉴에 쓴 리뷰(위 `reviews[]` 한 개 모양) 또는 `null` | 로그인 안 했으면 `null` 반환 |
-| `Reviews.saveReview(menuId, rating, comment, tagIds)` | `rating`: 1~5 정수, `comment`: 0~50자 문자열, `tagIds`: 그 메뉴 타입의 평가 버튼 id 배열(0개 이상) | 저장된 리뷰 | 회원 |
+| `Reviews.saveReview(menuId, rating, comment, tagIds)` | `rating`: 1~5 정수, `comment`: 0~50자 문자열, `tagIds`: 그 메뉴 타입의 평가 버튼 id 배열(0개 이상, 서로 반대인 버튼은 함께 넣을 수 없음) | 저장된 리뷰 | 회원 |
 | `Reviews.deleteReview(reviewId)` (P1) | 리뷰 id | 없음(`undefined`) | 회원, 본인 리뷰만 |
 | `Reviews.getMyReviews()` (P1) | 없음 | `[{ review, menu: MenuItem }]` 최신순 (마이페이지용) | 회원 |
 
 - `tagStats`는 그 메뉴 타입의 모든 평가 버튼을 `percent` 높은 순으로 담습니다(0%인 버튼도 포함).
 - `reviews`는 최신순입니다. `isSample`은 시연용 예시 리뷰면 `true`이며, 화면은 이 값으로 '예시' 표시를 붙입니다. (`getMyReview`가 돌려주는 리뷰도 같은 모양)
 - 같은 회원이 같은 메뉴에 다시 `saveReview`하면 **새로 만들지 않고 기존 리뷰를 고칩니다.** (회원 1명당 메뉴 1개에 리뷰 1개)
+- 뜻이 반대인 버튼(`data.md`의 `oppositeId`, 예: 진해요 ↔ 연해요)을 함께 넣으면 오류입니다. 화면에서도 한쪽을 고르면 반대쪽을 꺼서 함께 고를 수 없게 합니다.
 
 ## 4. Compare — C. 비교·추천 (`js/compare.js`)
 
 | 함수 | 입력 | 출력 | 권한 |
 | --- | --- | --- | --- |
 | `Compare.compareMenus(menuIds)` | 같은 타입 메뉴 id 2~4개 | `{ typeId, typeName, tags: [{ id, label }], rows: [{ menu: MenuItem, tagPercents: { [tagId]: percent } }], best: { price: menuId, rating: menuId, reviewCount: menuId, [tagId]: menuId } }` | 없음 |
-| `Compare.recommend(condition)` | `{ typeId: 숫자(필수), budget: 숫자 또는 null, tagIds: 숫자 배열(0~3개), area: 'all' \| 'campus' \| 'nearby' }` | `[{ rank: 1, menu: MenuItem, score: 0.83, reason: '예산 4,000원 이하 · 평점 4.6 (리뷰 12개) · \'고소해요\' 75%' }]` 최대 3개, 점수 높은 순 | 없음 |
+| `Compare.recommend(condition)` | `{ typeId: 숫자(필수), budget: 숫자 또는 null, tagIds: 숫자 배열(0~3개, 서로 반대인 버튼은 함께 넣을 수 없음), area: 'all' \| 'campus' \| 'nearby' }` | `[{ rank: 1, menu: MenuItem, score: 0.83, reason: '예산 4,000원 이하 · 평점 4.6 (리뷰 12개) · \'고소해요\' 75%' }]` 최대 3개, 점수 높은 순 | 없음 |
 
 - `best`는 항목별 1위 메뉴 id입니다(가격은 낮을수록, 나머지는 높을수록 1위). 1위가 여럿이면 앞의 메뉴.
 - 평점이 모두 `null`이거나, **모든 메뉴의 값이 같으면(모두 0 포함)** 그 항목은 `best`에 넣지 않습니다. 강조할 1위가 없기 때문입니다.
@@ -159,6 +160,7 @@
 | 비교 타입 다름 | `같은 종류의 메뉴끼리만 비교할 수 있어요` |
 | 추천 타입 없음 | `메뉴 타입을 골라 주세요` |
 | 추천 버튼 4개 이상 | `원하는 맛은 3개까지 고를 수 있어요` |
+| 반대 평가 버튼을 함께 고름 (리뷰·추천) | `서로 반대되는 평가 버튼은 함께 고를 수 없어요` |
 | 아이디 형식 | `아이디는 영문·숫자 4~12자로 정해 주세요` |
 | 비밀번호 짧음 | `비밀번호는 4자 이상이어야 합니다` |
 | 닉네임 길이 | `닉네임은 1~10자로 정해 주세요` |
