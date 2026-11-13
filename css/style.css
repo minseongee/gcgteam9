@@ -1,0 +1,601 @@
+/* 공통 스타일: 색·글꼴은 docs/rules.md 7절, 모양은 docs/ui 목업을 따름 */
+
+:root {
+    --bg: #FAF7F2;          /* 배경 */
+    --card: #FFFFFF;        /* 카드 배경 */
+    --accent: #6B3B1F;      /* 강조(버튼·선택됨) */
+    --accent-dark: #4A2814; /* 강조 눌렀을 때 */
+    --accent-soft: #F3E8DF; /* 강조 옅은 바탕 */
+    --text: #1E1A16;        /* 본문 글자 */
+    --muted: #6B625A;       /* 보조 글자 */
+    --line: #E6DED4;        /* 테두리 */
+    --line-soft: #EFE8DF;   /* 목록 줄 사이 */
+    --head-bg: #F7F1EA;     /* 목록 머리 바탕 */
+    --star: #A85F00;        /* 별점 */
+    --font: 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+    --tab-height: 64px;
+    --radius: 14px;
+}
+
+/* ── 기본 ── */
+* {
+    box-sizing: border-box;
+}
+
+html {
+    background: var(--bg);
+}
+
+body {
+    max-width: 480px;
+    min-height: 100vh;
+    margin: 0 auto;
+    background: var(--bg);
+    font-family: var(--font);
+    color: var(--text);
+    line-height: 1.4;
+}
+
+a {
+    color: var(--accent);
+}
+
+a:hover {
+    color: var(--accent-dark);
+}
+
+button,
+input,
+select,
+textarea {
+    font-family: inherit;
+    font-size: inherit;
+    color: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+h1,
+h2,
+p {
+    margin: 0;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+.icon {
+    display: inline-flex;
+    flex-shrink: 0;
+}
+
+/* 화면 읽기 프로그램에만 읽히는 글자 */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+}
+
+/* ── 상단 바 ── */
+.app-header {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    min-height: 56px;
+    padding: 0 4px;
+}
+
+.page-title {
+    padding: 0 16px;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.header-title {
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+}
+
+.icon-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--text);
+    text-decoration: none;
+}
+
+/* ── 본문 ── */
+#app {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 4px 20px calc(var(--tab-height) + 24px);
+}
+
+/* 아래 고정 막대(.bottom-bar)가 있는 화면 */
+#app.with-bottom-bar {
+    padding-bottom: calc(var(--tab-height) + 96px);
+}
+
+.section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.section-title {
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.row-between {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+
+.muted {
+    color: var(--muted);
+}
+
+.small {
+    font-size: 12px;
+}
+
+.empty {
+    padding: 32px 16px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 14px;
+}
+
+/* ── 하단 탭 ── */
+.tab-bar {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    z-index: 10;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    width: 100%;
+    max-width: 480px;
+    height: var(--tab-height);
+    background: var(--card);
+    border-top: 1px solid var(--line);
+    transform: translateX(-50%);
+}
+
+.tab {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--muted);
+    text-decoration: none;
+}
+
+.tab.is-current {
+    color: var(--accent);
+}
+
+/* 하단 탭 바로 위에 붙는 고정 막대 (비교함 막대, 리뷰 쓰기 버튼 등) */
+.bottom-bar {
+    position: fixed;
+    bottom: var(--tab-height);
+    left: 50%;
+    z-index: 9;
+    display: grid;
+    gap: 8px;
+    width: 100%;
+    max-width: 480px;
+    padding: 10px 20px 12px;
+    background: var(--bg);
+    border-top: 1px solid var(--line);
+    transform: translateX(-50%);
+}
+
+/* ── 안내 상자 (showError, showNotice) ── */
+.app-message {
+    position: fixed;
+    top: 12px;
+    left: 50%;
+    z-index: 20;
+    width: calc(100% - 40px);
+    max-width: 440px;
+    padding: 12px 16px;
+    border-radius: 12px;
+    background: var(--text);
+    color: #FFFFFF;
+    font-size: 14px;
+    transform: translateX(-50%);
+}
+
+.app-message.is-error {
+    background: #B3261E;
+}
+
+/* 페이지 안에 두는 주의 상자 (로그인 화면 비밀번호 안내 등) */
+.warning {
+    display: flex;
+    gap: 10px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: #FFF4E0;
+    border: 1px solid #F0D9B0;
+    color: #5C3D00;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+/* ── 카드 ── */
+.card {
+    display: block;
+    padding: 14px 16px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    color: var(--text);
+    text-decoration: none;
+}
+
+a.card:hover {
+    color: var(--text);
+    border-color: var(--accent);
+}
+
+/* 흰 상자 안에 줄을 여러 개 담는 목록 (카페 상세 메뉴, 마이 즐겨찾기 등) */
+.list-group {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+}
+
+.list-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 16px;
+    background: var(--head-bg);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--muted);
+}
+
+.list-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    min-height: 56px;
+    padding: 8px 16px;
+    border-top: 1px solid var(--line-soft);
+    color: var(--text);
+    text-decoration: none;
+}
+
+.list-group > .list-row:first-child {
+    border-top: 0;
+}
+
+a.list-row:hover {
+    color: var(--text);
+    background: var(--bg);
+}
+
+.list-main {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.list-name {
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.list-sub {
+    font-size: 12px;
+    color: var(--muted);
+}
+
+/* ── 칩 ── */
+.chip-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+/* 한 줄로 두고 넘치면 가로로 밀어 보는 칩 줄 */
+.chip-row.is-scroll {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    margin: 0 -20px;
+    padding: 0 20px;
+}
+
+.chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    min-height: 44px;
+    padding: 0 14px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--card);
+    color: var(--text);
+    font-size: 14px;
+    white-space: nowrap;
+    text-decoration: none;
+}
+
+.chip.is-selected {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #FFFFFF;
+}
+
+/* 작은 평가 버튼 표시 (누르는 것이 아님) */
+.tag {
+    display: inline-flex;
+    align-items: center;
+    height: 24px;
+    padding: 0 8px;
+    border-radius: 6px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+.tag-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+/* ── 둘·셋 중 하나 고르기 (홈 카페/메뉴 전환, 로그인/회원가입) ── */
+.segmented {
+    display: grid;
+    grid-auto-columns: minmax(0, 1fr);
+    grid-auto-flow: column;
+    padding: 4px;
+    border-radius: 12px;
+    background: var(--line-soft);
+}
+
+.segmented button {
+    min-height: 44px;
+    border: 0;
+    border-radius: 9px;
+    background: transparent;
+    color: var(--muted);
+    font-size: 15px;
+}
+
+.segmented button.is-selected {
+    background: var(--card);
+    color: var(--text);
+    font-weight: 700;
+}
+
+/* ── 밑줄 탭 (검색 메뉴/카페, 마이 즐겨찾기/내 리뷰) ── */
+.underline-tabs {
+    display: grid;
+    grid-auto-columns: minmax(0, 1fr);
+    grid-auto-flow: column;
+    border-bottom: 1px solid var(--line);
+}
+
+.underline-tabs button {
+    min-height: 44px;
+    border: 0;
+    border-bottom: 2px solid transparent;
+    background: none;
+    color: var(--muted);
+    font-size: 15px;
+}
+
+.underline-tabs button.is-selected {
+    border-bottom-color: var(--accent);
+    color: var(--accent);
+    font-weight: 700;
+}
+
+/* ── 버튼 ── */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-height: 48px;
+    padding: 0 16px;
+    border: 1px solid var(--accent);
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.btn-primary {
+    background: var(--accent);
+    color: #FFFFFF;
+}
+
+.btn-primary:hover {
+    background: var(--accent-dark);
+    color: #FFFFFF;
+}
+
+.btn-outline {
+    background: var(--card);
+    color: var(--accent);
+}
+
+.btn-block {
+    width: 100%;
+}
+
+.btn-large {
+    min-height: 52px;
+    border-radius: var(--radius);
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: default;
+}
+
+/* 진한 색 바로가기 막대 (홈 '오늘 뭐 마시지?', 마이 '내 카페 관리') */
+.banner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 56px;
+    padding: 10px 18px;
+    border-radius: var(--radius);
+    background: var(--accent);
+    color: #FFFFFF;
+    text-decoration: none;
+}
+
+.banner:hover {
+    background: var(--accent-dark);
+    color: #FFFFFF;
+}
+
+.banner-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.banner-title {
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.banner-sub {
+    font-size: 12px;
+    color: var(--accent-soft);
+}
+
+/* ── 입력칸 ── */
+.input {
+    width: 100%;
+    min-height: 44px;
+    padding: 0 14px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--card);
+    font-size: 15px;
+}
+
+textarea.input {
+    padding: 12px 14px;
+    resize: none;
+}
+
+select.input {
+    padding: 0 10px;
+}
+
+.input:focus {
+    outline: 2px solid var(--accent);
+    outline-offset: -1px;
+}
+
+/* 이름표 + 입력칸 묶음 */
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* ── 배지 (교내 / 근처) ── */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    height: 22px;
+    padding: 0 7px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.badge-campus {
+    background: var(--accent);
+    color: #FFFFFF;
+}
+
+.badge-nearby {
+    background: var(--card);
+    color: var(--accent);
+    border: 1px solid var(--accent);
+}
+
+/* ── 별점 ── */
+.rating {
+    color: var(--star);
+    font-weight: 700;
+}
+
+.rating.is-none {
+    color: var(--muted);
+    font-weight: 400;
+}
+
+/* ── 표 가로 스크롤 상자 ── */
+.table-scroll {
+    overflow-x: auto;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+}
+
+.table-scroll table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table-scroll th,
+.table-scroll td {
+    height: 44px;
+    padding: 0 8px;
+    border-bottom: 1px solid var(--line-soft);
+    font-size: 13px;
+    text-align: center;
+}
+
+.table-scroll tr:last-child th,
+.table-scroll tr:last-child td {
+    border-bottom: 0;
+}
