@@ -22,6 +22,7 @@
   - `type="module"`, `import`, `export`는 쓰지 않습니다. 파일을 더블클릭해 열면(file://) 브라우저가 막습니다.
   - `fetch`로 로컬 JSON 파일을 읽지 않습니다. 같은 이유로 막힙니다. 초기 데이터는 `js/data.js` 안의 JS 객체로 둡니다.
 - **파일 하나는 전역 객체 하나만 만듭니다.** 다른 전역 변수를 만들지 않습니다.
+  - 예외: `js/ui/common.js`는 모든 화면이 함께 쓰는 **화면 도우미 함수**를 전역 함수로 둡니다(아래 표). 이 함수들은 화면만 다루고, 기능 모듈·`DataStore`는 부르지 않습니다.
 
   | 파일 | 전역 이름 |
   | --- | --- |
@@ -32,7 +33,9 @@
   | `js/reviews.js` | `Reviews` |
   | `js/compare.js` | `Compare` |
   | `js/account.js` | `Account` |
-  | `js/ui/*.js` | 전역 이름 없음 (화면별 스크립트) |
+  | `js/ui/common.js` | 화면 도우미 함수: `el`, `icon`, `renderHeader`, `renderTabBar`, `getQueryNumber`, `showMessage`, `showError`, `showNotice`, `formatPrice`, `formatRating`, `formatStars`, `areaBadge`, `loginUrl` |
+  | `js/ui/<화면이름>.js` | 전역 이름 없음. 파일 전체를 `(function () { … })();`로 감싸 안의 변수·함수가 밖으로 나가지 않게 함 |
+  | `js/mock/*.mock.js` | 진짜 모듈과 같은 이름(`Auth`, `Cafes`, `Reviews`, `Compare`, `Account`). 화면 개발용 가짜라 진짜 모듈 **대신** 불러옴(함께 불러오면 이름이 겹쳐 오류) |
 
 - **스크립트 불러오는 순서** (모든 html 파일 공통, `</body>` 바로 위):
 
@@ -74,6 +77,7 @@ project/
     compare.js          C. 비교·추천
     account.js          D. 계정·즐겨찾기·운영
     ui/                 화면별 스크립트 (common.js, home.js, search.js …)
+    mock/               화면 개발용 가짜 모듈 (cafes.mock.js 등, 진짜 모듈 대신 script 태그를 바꿔 끼움)
   docs/                 설계 문서 (이 폴더)
 ```
 
