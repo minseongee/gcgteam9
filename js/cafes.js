@@ -296,7 +296,8 @@ const Cafes = {
 
     // 역할: 메뉴 타입 목록과 각 타입에서 고를 수 있는 평가 버튼을 돌려준다
     // 입력: 없음
-    // 출력: [{ id, name, tags: [{ id, label }] }] 각 tags는 그 타입 버튼 다음에 공통 버튼
+    // 출력: [{ id, name, tags: [{ id, label, oppositeId }] }] 각 tags는 그 타입 버튼 다음에 공통 버튼
+    //       oppositeId는 뜻이 반대인 버튼 id 또는 null
     // 오류: 없음
     getMenuTypes: function () {
         const menuTypes = DataStore.load('menuTypes');
@@ -306,7 +307,9 @@ const Cafes = {
             const typeTags = [];
             const commonTags = [];
             for (let j = 0; j < evalTags.length; j++) {
-                const tag = { id: evalTags[j].id, label: evalTags[j].label };
+                // data.js를 고친 뒤 DataStore.reset()을 안 해 oppositeId가 없는 옛 데이터면 null로 본다
+                const oppositeId = evalTags[j].oppositeId === undefined ? null : evalTags[j].oppositeId;
+                const tag = { id: evalTags[j].id, label: evalTags[j].label, oppositeId: oppositeId };
                 if (evalTags[j].typeId === menuTypes[i].id) {
                     typeTags.push(tag);
                 } else if (evalTags[j].typeId === null) {

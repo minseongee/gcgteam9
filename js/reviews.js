@@ -159,7 +159,7 @@ const Reviews = {
     // 출력: 저장된 리뷰 (getMyReview와 같은 모양)
     // 오류: '로그인이 필요합니다' / '메뉴를 찾을 수 없습니다'
     //       '별점은 1~5 사이로 골라 주세요' / '한줄평은 50자 이내로 써 주세요'
-    //       '이 메뉴에서 고를 수 없는 평가 버튼입니다'
+    //       '이 메뉴에서 고를 수 없는 평가 버튼입니다' / '서로 반대되는 평가 버튼은 함께 고를 수 없어요'
     saveReview: function (menuId, rating, comment, tagIds) {
         const user = Auth.requireLogin();
         const menu = Cafes.getMenu(menuId);
@@ -184,6 +184,12 @@ const Reviews = {
             }
             if (cleanTagIds.indexOf(tagIds[i]) === -1) {
                 cleanTagIds.push(tagIds[i]);
+            }
+        }
+        for (let i = 0; i < typeTags.length; i++) {
+            const picked = cleanTagIds.indexOf(typeTags[i].id) !== -1;
+            if (picked && cleanTagIds.indexOf(typeTags[i].oppositeId) !== -1) {
+                throw new Error('서로 반대되는 평가 버튼은 함께 고를 수 없어요');
             }
         }
 

@@ -87,7 +87,7 @@
                     state.tagIds.splice(index, 1);
                 } else {
                     // 반대 버튼이 켜져 있으면 끄고 이 버튼을 켠다 (예: '연해요'를 누르면 '진해요'가 꺼짐)
-                    const oppositeId = findOppositeTagId(type.tags, tag);
+                    const oppositeId = tag.oppositeId;
                     state.tagIds = state.tagIds.filter(function (id) {
                         return id !== oppositeId;
                     });

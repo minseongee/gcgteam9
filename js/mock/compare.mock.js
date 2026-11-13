@@ -101,7 +101,10 @@ const Compare = {
                 best[keys[k]] = rows[bestIndex].menu.id;
             }
         }
-        return { typeId: type.id, typeName: type.name, tags: type.tags, rows: rows, best: best };
+        const tags = type.tags.map(function (tag) {
+            return { id: tag.id, label: tag.label };
+        });
+        return { typeId: type.id, typeName: type.name, tags: tags, rows: rows, best: best };
     },
 
     // 역할: 조건 추천 / 입력: { typeId, budget, tagIds, area }

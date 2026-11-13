@@ -48,21 +48,21 @@ const Cafes = {
     // 고정 데이터: 메뉴 타입과 평가 버튼 (공통 버튼 17, 18 포함)
     typeList: [
         { id: 1, name: '커피', tags: [
-            { id: 1, label: '산미가 강해요' }, { id: 2, label: '고소해요' }, { id: 3, label: '진해요' },
-            { id: 4, label: '연해요' }, { id: 5, label: '쓴맛이 강해요' },
-            { id: 17, label: '양이 많아요' }, { id: 18, label: '가성비 좋아요' }] },
+            { id: 1, label: '산미가 강해요', oppositeId: null }, { id: 2, label: '고소해요', oppositeId: null }, { id: 3, label: '진해요', oppositeId: 4 },
+            { id: 4, label: '연해요', oppositeId: 3 }, { id: 5, label: '쓴맛이 강해요', oppositeId: null },
+            { id: 17, label: '양이 많아요', oppositeId: null }, { id: 18, label: '가성비 좋아요', oppositeId: null }] },
         { id: 2, name: '논커피 라떼', tags: [
-            { id: 6, label: '달아요' }, { id: 7, label: '덜 달아요' }, { id: 8, label: '우유 맛이 진해요' },
-            { id: 17, label: '양이 많아요' }, { id: 18, label: '가성비 좋아요' }] },
+            { id: 6, label: '달아요', oppositeId: 7 }, { id: 7, label: '덜 달아요', oppositeId: 6 }, { id: 8, label: '우유 맛이 진해요', oppositeId: null },
+            { id: 17, label: '양이 많아요', oppositeId: null }, { id: 18, label: '가성비 좋아요', oppositeId: null }] },
         { id: 3, name: '차', tags: [
-            { id: 9, label: '향이 좋아요' }, { id: 10, label: '진해요' }, { id: 11, label: '연해요' },
-            { id: 17, label: '양이 많아요' }, { id: 18, label: '가성비 좋아요' }] },
+            { id: 9, label: '향이 좋아요', oppositeId: null }, { id: 10, label: '진해요', oppositeId: 11 }, { id: 11, label: '연해요', oppositeId: 10 },
+            { id: 17, label: '양이 많아요', oppositeId: null }, { id: 18, label: '가성비 좋아요', oppositeId: null }] },
         { id: 4, name: '에이드·스무디', tags: [
-            { id: 12, label: '달아요' }, { id: 13, label: '새콤해요' }, { id: 14, label: '탄산이 강해요' },
-            { id: 17, label: '양이 많아요' }, { id: 18, label: '가성비 좋아요' }] },
+            { id: 12, label: '달아요', oppositeId: null }, { id: 13, label: '새콤해요', oppositeId: null }, { id: 14, label: '탄산이 강해요', oppositeId: null },
+            { id: 17, label: '양이 많아요', oppositeId: null }, { id: 18, label: '가성비 좋아요', oppositeId: null }] },
         { id: 5, name: '디저트', tags: [
-            { id: 15, label: '달아요' }, { id: 16, label: '촉촉해요' },
-            { id: 17, label: '양이 많아요' }, { id: 18, label: '가성비 좋아요' }] }
+            { id: 15, label: '달아요', oppositeId: null }, { id: 16, label: '촉촉해요', oppositeId: null },
+            { id: 17, label: '양이 많아요', oppositeId: null }, { id: 18, label: '가성비 좋아요', oppositeId: null }] }
     ],
 
     // 고정 데이터: 지도 핀 위치(%)

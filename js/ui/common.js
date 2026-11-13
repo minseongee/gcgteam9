@@ -203,27 +203,3 @@ function loginUrl() {
     const page = location.pathname.split('/').pop() + location.search;
     return 'login.html?next=' + encodeURIComponent(page);
 }
-
-// 역할: 같은 타입 안에서 뜻이 반대인 평가 버튼의 id를 찾는다 (리뷰 쓰기·추천에서 둘을 함께 못 고르게)
-// 입력: tags - 그 타입의 평가 버튼 [{ id, label }], tag - 누른 버튼 { id, label }
-// 출력: 반대 버튼 id, 없으면 null
-function findOppositeTagId(tags, tag) {
-    // ponytail: 버튼 이름으로 짝을 짓는다. data.js의 이름을 바꾸면 여기도 고쳐야 함 (data.md에 짝 정보를 두면 없앨 수 있음)
-    const pairs = [
-        ['진해요', '연해요'],
-        ['달아요', '덜 달아요']
-    ];
-    for (let i = 0; i < pairs.length; i++) {
-        const at = pairs[i].indexOf(tag.label);
-        if (at === -1) {
-            continue;
-        }
-        const oppositeLabel = pairs[i][1 - at];
-        for (let j = 0; j < tags.length; j++) {
-            if (tags[j].label === oppositeLabel) {
-                return tags[j].id;
-            }
-        }
-    }
-    return null;
-}

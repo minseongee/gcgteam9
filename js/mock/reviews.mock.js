@@ -23,6 +23,8 @@ const Reviews = {
         });
         return type.tags.filter(function (tag) {
             return tagIds.includes(tag.id);
+        }).map(function (tag) {
+            return { id: tag.id, label: tag.label };
         });
     },
 

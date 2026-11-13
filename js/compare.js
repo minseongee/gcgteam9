@@ -139,11 +139,14 @@ const Compare = {
         }
 
         const typeId = rows[0].menu.typeId;
-        let tags = [];
+        // 출력 모양(interface.md)대로 { id, label }만 담는다
+        const tags = [];
         const types = Cafes.getMenuTypes();
         for (let i = 0; i < types.length; i++) {
             if (types[i].id === typeId) {
-                tags = types[i].tags;
+                for (let j = 0; j < types[i].tags.length; j++) {
+                    tags.push({ id: types[i].tags[j].id, label: types[i].tags[j].label });
+                }
             }
         }
 
@@ -322,7 +325,8 @@ const Compare = {
     // 출력: [{ rank, menu: MenuItem, score, reason }] 점수 높은 순 최대 3개 (점수는 소수 둘째 자리까지)
     //       점수가 같으면 평점순(Cafes.searchMenus 'rating') 앞의 메뉴가 먼저. 맞는 메뉴가 없으면 []
     // 오류: '메뉴 타입을 골라 주세요' / '원하는 맛은 3개까지 고를 수 있어요'
-    //       '이 메뉴에서 고를 수 없는 평가 버튼입니다' / '가격은 0보다 큰 숫자로 써 주세요'(예산)
+    //       '이 메뉴에서 고를 수 없는 평가 버튼입니다' / '서로 반대되는 평가 버튼은 함께 고를 수 없어요'
+    //       '가격은 0보다 큰 숫자로 써 주세요'(예산)
     recommend: function (condition) {
         let tags = null;
         const types = Cafes.getMenuTypes();
@@ -354,6 +358,12 @@ const Compare = {
             }
             if (!allowed) {
                 throw new Error('이 메뉴에서 고를 수 없는 평가 버튼입니다');
+            }
+        }
+        for (let i = 0; i < tags.length; i++) {
+            const picked = tagIds.indexOf(tags[i].id) !== -1;
+            if (picked && tagIds.indexOf(tags[i].oppositeId) !== -1) {
+                throw new Error('서로 반대되는 평가 버튼은 함께 고를 수 없어요');
             }
         }
 
