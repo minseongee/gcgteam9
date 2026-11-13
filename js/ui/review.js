@@ -162,7 +162,8 @@
             save.addEventListener('click', function () {
                 try {
                     Reviews.saveReview(menuId, state.rating, commentPart.textarea.value.trim(), state.tagIds);
-                    location.href = 'menu.html?id=' + menuId;
+                    // replace: 저장 뒤 '뒤로'를 눌러도 리뷰 쓰기 화면이 다시 열리지 않게
+                    location.replace('menu.html?id=' + menuId);
                 } catch (e) {
                     showError(e.message);
                 }

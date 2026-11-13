@@ -60,8 +60,9 @@ function renderHeader(title, showBack) {
         back.type = 'button';
         back.setAttribute('aria-label', '뒤로');
         back.appendChild(icon('back'));
+        // file://로 열면 document.referrer가 비어 있으므로 방문 기록 수로만 판단한다
         back.addEventListener('click', function () {
-            if (document.referrer !== '' && history.length > 1) {
+            if (history.length > 1) {
                 history.back();
             } else {
                 location.href = 'index.html';

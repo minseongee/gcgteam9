@@ -104,7 +104,8 @@
                 } else {
                     Account.signup(loginId.input.value.trim(), password.input.value, nickname.input.value.trim());
                 }
-                location.href = nextUrl();
+                // replace: 로그인 뒤 '뒤로'를 눌러도 로그인 화면이 다시 열리지 않게
+                location.replace(nextUrl());
             } catch (e) {
                 showError(e.message);
             }

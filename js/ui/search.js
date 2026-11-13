@@ -204,6 +204,8 @@
         input.value = state.keyword;
         input.addEventListener('input', function () {
             state.keyword = input.value.trim();
+            // 주소의 ?q=도 바꿔 둔다: 메뉴 상세에 갔다가 '뒤로' 와도 검색어가 남게
+            history.replaceState(null, '', 'search.html?q=' + encodeURIComponent(state.keyword));
             renderResults();
         });
         header.appendChild(label);
