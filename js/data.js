@@ -18,15 +18,20 @@ const SEED_DATA = {
     ],
     cafes: [
         { id: 1, ownerId: 1, name: '프롬프트 일청담점', area: 'campus', locationText: '일청담 근처',
-          lat: 0, lng: 0, openHours: '영업시간 확인 중' },    // TODO: 실제 위도·경도, 영업시간
+          lat: 0, lng: 0, openHours: '영업시간 확인 중',
+          photo: 'img/cafes/cafe-1.jpg' },    // TODO: 실제 위도·경도, 영업시간
         { id: 2, ownerId: 2, name: '생활관 카페', area: 'campus', locationText: '생활관',
-          lat: 0, lng: 0, openHours: '영업시간 확인 중' },    // TODO: 실제 위도·경도, 영업시간
+          lat: 0, lng: 0, openHours: '영업시간 확인 중',
+          photo: 'img/cafes/cafe-2.jpg' },    // TODO: 실제 위도·경도, 영업시간
         { id: 3, ownerId: 3, name: '할리스 쿱카페 크누라운지점', area: 'campus', locationText: '크누라운지',
-          lat: 0, lng: 0, openHours: '영업시간 확인 중' },    // TODO: 실제 위도·경도, 영업시간
+          lat: 0, lng: 0, openHours: '영업시간 확인 중',
+          photo: 'img/cafes/cafe-3.jpg' },    // TODO: 실제 위도·경도, 영업시간
         { id: 4, ownerId: 4, name: '메가MGC커피 나래관점', area: 'campus', locationText: '나래관',
-          lat: 0, lng: 0, openHours: '영업시간 확인 중' },    // TODO: 실제 위도·경도, 영업시간
+          lat: 0, lng: 0, openHours: '영업시간 확인 중',
+          photo: 'img/cafes/cafe-4.jpg' },    // TODO: 실제 위도·경도, 영업시간
         { id: 5, ownerId: 5, name: '빅핸즈 경북대점', area: 'nearby', locationText: '경북대 인근',
-          lat: 0, lng: 0, openHours: '영업시간 확인 중' }    // TODO: 실제 위도·경도, 영업시간
+          lat: 0, lng: 0, openHours: '영업시간 확인 중',
+          photo: 'img/cafes/cafe-5.jpg' }    // TODO: 실제 위도·경도, 영업시간
     ],
     menuTypes: [
         { id: 1, name: '커피' },

@@ -69,6 +69,7 @@ project/
   owner.html            사장 관리
   css/style.css         공통 스타일
   img/campus-map.png    캠퍼스 지도 이미지
+  img/cafes/            카페 사진 (cafe-<id>.jpg, data.md 8절)
   js/
     data.js             초기 데이터
     storage.js          저장소

@@ -47,6 +47,7 @@
 | `locationText` | 문자열 | 예: `'[건물 1] 1층'` |
 | `lat`, `lng` | 숫자 | 실제 위도·경도. 지도 핀 위치와 카카오맵 링크를 둘 다 이 값으로 만듭니다 |
 | `openHours` | 문자열 | 예: `'평일 08:30-19:00'` |
+| `photo` | 문자열 | 카페 사진 경로, 예: `'img/cafes/cafe-1.jpg'`. 사진이 없으면 `''` |
 
 ### menuTypes — 메뉴 타입
 
@@ -153,7 +154,7 @@ const SEED_DATA = {
     ],
     cafes: [
         { id: 1, ownerId: 1, name: '카페 A', area: 'campus', locationText: '[건물 1] 1층',
-          lat: 0, lng: 0, openHours: '평일 08:30-19:00' }
+          lat: 0, lng: 0, openHours: '평일 08:30-19:00', photo: 'img/cafes/cafe-1.jpg' }
     ],
     menuTypes: [
         { id: 1, name: '커피' }
@@ -189,3 +190,9 @@ cafe_name,area,location_text,lat,lng,open_hours,menu_name,menu_type,price,option
 ```
 
 - `area`는 `교내` 또는 `근처`, `menu_type`은 4절의 메뉴 타입 이름 그대로 씁니다.
+
+## 8. 카페 사진
+
+- 위치: `img/cafes/cafe-<카페 id>.jpg` (예: 카페 1 → `img/cafes/cafe-1.jpg`), `cafes.photo`에 이 경로를 적습니다.
+- 원본 사진은 그대로 넣지 않고 **긴 변 1200px 이하, JPEG 품질 80**으로 줄이고, 사진 속 위치 정보(EXIF)는 지운 뒤 넣습니다. (원본은 레포 밖 '사진모음' 폴더)
+- 사진이 없는 카페는 `photo: ''`로 두면 화면이 카페 이름 첫 글자로 된 자리 표시를 보여 줍니다.

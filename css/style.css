@@ -6,6 +6,8 @@
     --accent: #6B3B1F;      /* 강조(버튼·선택됨) */
     --accent-dark: #4A2814; /* 강조 눌렀을 때 */
     --accent-soft: #F3E8DF; /* 강조 옅은 바탕 */
+    --cafe-card-bg: #F1E9DF; /* 홈 카페 카드 바탕 (배경보다 조금 진하게) */
+    --cafe-card-line: #E2D6C8; /* 홈 카페 카드 테두리 */
     --text: #1E1A16;        /* 본문 글자 */
     --muted: #6B625A;       /* 보조 글자 */
     --line: #E6DED4;        /* 테두리 */
@@ -626,40 +628,85 @@ select.input {
 
 .cafe-card {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 12px;
+    flex-direction: column;
+    margin-bottom: 16px;
+    padding: 8px;
+    border: 1px solid var(--cafe-card-line);
+    border-radius: 18px;
+    background: var(--cafe-card-bg);
+    color: var(--text);
+    text-decoration: none;
 }
 
-.cafe-card-main {
+.cafe-card-body {
     display: flex;
     flex-direction: column;
-    gap: 5px;
-    min-width: 0;
+    gap: 6px;
+    padding: 10px 8px 8px;
+}
+
+a.cafe-card:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
 }
 
 .cafe-card-title {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 4px;
+    min-width: 0;
 }
 
 .cafe-card-name {
+    min-width: 0;
+    margin-right: 4px;
+    overflow: hidden;
+    font-size: 18px;
+    font-weight: 700;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.cafe-card-star {
+    flex-shrink: 0;
+    color: var(--star);
     font-size: 16px;
+}
+
+.cafe-card-rating {
+    flex-shrink: 0;
+    font-size: 17px;
     font-weight: 700;
 }
 
-.cafe-card-sub {
-    font-size: 13px;
+.cafe-card-count {
+    flex-shrink: 0;
+    color: var(--muted);
+    font-size: 15px;
 }
 
-.cafe-card-score {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 3px;
+.cafe-card-noreview {
     flex-shrink: 0;
-    font-size: 15px;
+    color: var(--muted);
+    font-size: 14px;
+}
+
+.cafe-card-meta {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--muted);
+    font-size: 14px;
+}
+
+.cafe-card-dot {
+    margin: 0 2px;
+}
+
+.cafe-card-tags {
+    display: flex;
+    gap: 6px;
+    margin-top: 2px;
 }
 
 .home-group-head {
@@ -1461,4 +1508,40 @@ select.input {
     color: var(--accent);
     font-size: 12px;
     line-height: 1.5;
+}
+
+/* 카페 사진 (홈 카페 카드, 카페 상세 위쪽) */
+.cafe-card-photo {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    border-radius: 12px;
+    object-fit: cover;
+    object-position: center 35%;
+    background: var(--accent-soft);
+}
+
+.cafe-hero {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    border-radius: 16px;
+    object-fit: cover;
+    object-position: center 35%;
+    background: var(--accent-soft, #F3E8DF);
+}
+
+.cafe-card-photo.is-placeholder,
+.cafe-hero.is-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent, #6B3B1F);
+    font-weight: 700;
+    font-size: 24px;
+}
+
+.cafe-card-photo.is-placeholder,
+.cafe-hero.is-placeholder {
+    font-size: 48px;
 }

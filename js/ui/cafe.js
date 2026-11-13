@@ -46,6 +46,7 @@
     // 출력: 없음
     function renderInfo(cafe) {
         const info = el('section', 'section');
+        info.appendChild(cafePhoto(cafe, 'cafe-hero'));
         const title = el('div', 'cafe-title');
         title.appendChild(el('h1', 'cafe-name', cafe.name));
         title.appendChild(areaBadge(cafe.area));

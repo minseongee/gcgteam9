@@ -4,13 +4,13 @@
 const Cafes = {
     // 고정 데이터: CafeItem (평점 높은 순, 리뷰 없는 카페는 맨 뒤)
     cafeList: [
-        { id: 4, name: '카페 D', area: 'nearby', areaLabel: '근처', locationText: '정문 앞',
+        { id: 4, name: '카페 D', area: 'nearby', areaLabel: '근처', photo: '', locationText: '정문 앞',
           openHours: '매일 10:00-22:00', menuCount: 2, avgRating: 4.3, reviewCount: 3 },
-        { id: 1, name: '카페 A', area: 'campus', areaLabel: '교내', locationText: '[건물 1] 1층',
+        { id: 1, name: '카페 A', area: 'campus', areaLabel: '교내', photo: '', locationText: '[건물 1] 1층',
           openHours: '평일 08:30-19:00', menuCount: 3, avgRating: 4.2, reviewCount: 6 },
-        { id: 2, name: '카페 B', area: 'campus', areaLabel: '교내', locationText: '[건물 2] 지하 1층',
+        { id: 2, name: '카페 B', area: 'campus', areaLabel: '교내', photo: '', locationText: '[건물 2] 지하 1층',
           openHours: '평일 09:00-18:00', menuCount: 3, avgRating: 4.0, reviewCount: 3 },
-        { id: 5, name: '카페 E', area: 'nearby', areaLabel: '근처', locationText: '북문 근처',
+        { id: 5, name: '카페 E', area: 'nearby', areaLabel: '근처', photo: '', locationText: '북문 근처',
           openHours: '매일 11:00-23:00', menuCount: 1, avgRating: null, reviewCount: 0 }
     ],
 

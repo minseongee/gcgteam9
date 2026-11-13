@@ -19,10 +19,11 @@
 ```js
 { id: 1, name: '카페 A', area: 'campus', areaLabel: '교내',
   locationText: '[건물 1] 1층', openHours: '평일 08:30-19:00',
-  menuCount: 8, avgRating: 4.3, reviewCount: 31 }
+  photo: 'img/cafes/cafe-1.jpg', menuCount: 8, avgRating: 4.3, reviewCount: 31 }
 ```
 
 - `avgRating`, `reviewCount`는 그 카페 모든 메뉴 리뷰를 합쳐 계산합니다.
+- `photo`는 카페 사진 경로입니다. 사진이 없으면 `''`이고, 화면은 이때 자리 표시를 보여 줍니다(홈 카페 목록 카드, 카페 상세 위쪽).
 
 **MenuItem** — 메뉴 목록 한 줄
 

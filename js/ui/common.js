@@ -85,7 +85,7 @@ function renderTabBar(current) {
         { key: 'map', label: '지도', href: 'map.html' },
         { key: 'compare', label: '비교', href: 'compare.html' },
         { key: 'recommend', label: '추천', href: 'recommend.html' },
-        { key: 'my', label: '마이', href: 'mypage.html' }
+        { key: 'my', label: 'My', href: 'mypage.html' }
     ];
     const nav = document.getElementById('tab-bar');
     nav.textContent = '';
@@ -202,4 +202,23 @@ function areaBadge(area) {
 function loginUrl() {
     const page = location.pathname.split('/').pop() + location.search;
     return 'login.html?next=' + encodeURIComponent(page);
+}
+
+// 역할: 카페 사진 요소를 만든다. 사진이 없으면 카페 이름 첫 글자로 된 자리 표시를 만든다
+// 입력: cafe - CafeItem (photo, name 사용), className - 붙일 클래스 ('cafe-card-photo' | 'cafe-hero')
+// 출력: <img> 또는 <span> 요소 (불러오기에 실패해도 자리 표시로 바뀜)
+function cafePhoto(cafe, className) {
+    const placeholder = el('span', className + ' is-placeholder', cafe.name.charAt(0));
+    placeholder.setAttribute('aria-hidden', 'true');
+    if (cafe.photo === '') {
+        return placeholder;
+    }
+    const img = el('img', className);
+    img.src = cafe.photo;
+    img.alt = cafe.name + ' 사진';
+    img.loading = 'lazy';
+    img.addEventListener('error', function () {
+        img.replaceWith(placeholder);
+    });
+    return img;
 }

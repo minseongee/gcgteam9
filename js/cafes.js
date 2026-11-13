@@ -169,6 +169,7 @@ const Cafes = {
             areaLabel: Cafes.areaLabels[cafe.area],
             locationText: cafe.locationText,
             openHours: cafe.openHours,
+            photo: typeof cafe.photo === 'string' ? cafe.photo : '',
             menuCount: menuIds.length,
             avgRating: Cafes.calcAvgRating(ratings),
             reviewCount: ratings.length

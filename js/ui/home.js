@@ -5,29 +5,45 @@
     const app = document.getElementById('app');
     let currentArea = 'all';
 
-    // 역할: 카페 카드 하나를 만든다
+    // 역할: 카페 카드 하나를 만든다 (배달 앱처럼 위에 큰 사진, 아래에 이름·평점·위치·배지)
     // 입력: cafe - CafeItem
-    // 출력: <a class="card"> 요소 (누르면 cafe.html?id=)
+    // 출력: <a class="cafe-card"> 요소 (누르면 cafe.html?id=)
     function makeCafeCard(cafe) {
-        const card = el('a', 'card cafe-card');
+        const card = el('a', 'cafe-card');
         card.href = 'cafe.html?id=' + cafe.id;
+        card.appendChild(cafePhoto(cafe, 'cafe-card-photo'));
+        const body = el('span', 'cafe-card-body');
+        card.appendChild(body);
 
-        const left = el('span', 'cafe-card-main');
         const title = el('span', 'cafe-card-title');
         title.appendChild(el('span', 'cafe-card-name', cafe.name));
-        title.appendChild(areaBadge(cafe.area));
-        left.appendChild(title);
-        left.appendChild(el('span', 'muted cafe-card-sub', cafe.locationText + ' · 메뉴 ' + cafe.menuCount + '개'));
-        card.appendChild(left);
-
-        const right = el('span', 'cafe-card-score');
         if (cafe.avgRating === null) {
-            right.appendChild(el('span', 'rating is-none', '리뷰 없음'));
+            title.appendChild(el('span', 'cafe-card-noreview', '리뷰 없음'));
         } else {
-            right.appendChild(el('span', 'rating', formatRating(cafe.avgRating)));
-            right.appendChild(el('span', 'muted small', '리뷰 ' + cafe.reviewCount));
+            const star = el('span', 'cafe-card-star', '★');
+            star.setAttribute('aria-hidden', 'true');
+            title.appendChild(star);
+            const rating = el('span', 'cafe-card-rating', cafe.avgRating.toFixed(1));
+            rating.setAttribute('aria-label', '평점 ' + cafe.avgRating.toFixed(1));
+            title.appendChild(rating);
+            const count = el('span', 'cafe-card-count', '(' + cafe.reviewCount + ')');
+            count.setAttribute('aria-label', '리뷰 ' + cafe.reviewCount + '개');
+            title.appendChild(count);
         }
-        card.appendChild(right);
+        body.appendChild(title);
+
+        const meta = el('span', 'cafe-card-meta');
+        meta.appendChild(icon('pin', 16));
+        meta.appendChild(el('span', '', cafe.locationText));
+        const dot = el('span', 'cafe-card-dot', '·');
+        dot.setAttribute('aria-hidden', 'true');
+        meta.appendChild(dot);
+        meta.appendChild(el('span', '', '메뉴 ' + cafe.menuCount + '개'));
+        body.appendChild(meta);
+
+        const tags = el('span', 'cafe-card-tags');
+        tags.appendChild(areaBadge(cafe.area));
+        body.appendChild(tags);
         return card;
     }
 
