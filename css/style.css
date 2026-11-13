@@ -674,3 +674,109 @@ select.input {
 .list-group[id] {
     scroll-margin-top: 8px;
 }
+
+/* 검색 결과 */
+.search-header {
+    padding-right: 20px;
+}
+
+.search-header .header-title {
+    display: none;
+}
+
+.search-input {
+    flex: 1;
+}
+
+.search-count {
+    font-size: 13px;
+}
+
+.search-sort {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+    font-size: 13px;
+}
+
+.search-sort-select {
+    width: auto;
+    font-size: 13px;
+}
+
+.search-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.search-card-link {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 0;
+    color: var(--text);
+    text-decoration: none;
+}
+
+.search-card-link:hover {
+    color: var(--text);
+}
+
+.search-card-name {
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.search-card-sub {
+    font-size: 13px;
+}
+
+.search-card-score {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+}
+
+.search-add-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--card);
+    color: var(--accent);
+}
+
+.search-add-btn.is-selected {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+}
+
+.search-box-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 52px;
+    padding: 0 18px;
+    border-radius: var(--radius);
+    background: var(--text);
+    color: #FFFFFF;
+    font-size: 15px;
+    text-decoration: none;
+}
+
+.search-box-bar:hover {
+    color: #FFFFFF;
+}
+
+.search-box-go {
+    font-weight: 700;
+}
