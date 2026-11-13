@@ -146,17 +146,21 @@ const Account = {
     },
 
     // 역할: 카페 정보(이름, 위치 설명, 영업시간)를 고친다 (P1)
-    // 입력: cafeId - 카페 id, info - { name, locationText, openHours } (문자열이 아닌 값은 고치지 않음)
+    // 입력: cafeId - 카페 id, info - { name, locationText, openHours }
+    //       name은 앞뒤 공백을 지워 저장(비면 오류), locationText·openHours는 비어도 됨(문자열이 아니면 고치지 않음)
     // 출력: 수정된 CafeItem
     // 오류: '로그인이 필요합니다' / '카페를 찾을 수 없습니다' / '이 카페를 관리할 권한이 없습니다'
+    //       '카페 이름을 입력해 주세요'
     updateCafe: function (cafeId, info) {
         Auth.requireOwnerOf(cafeId);
+        const name = typeof info.name === 'string' ? info.name.trim() : '';
+        if (name === '') {
+            throw new Error('카페 이름을 입력해 주세요');
+        }
         const cafes = DataStore.load('cafes');
         for (let i = 0; i < cafes.length; i++) {
             if (cafes[i].id === cafeId) {
-                if (typeof info.name === 'string') {
-                    cafes[i].name = info.name;
-                }
+                cafes[i].name = name;
                 if (typeof info.locationText === 'string') {
                     cafes[i].locationText = info.locationText;
                 }

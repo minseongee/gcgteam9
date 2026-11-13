@@ -21,9 +21,19 @@ const Compare = {
     // 입력: rows - compareMenus의 rows 배열
     //       getValue - 행 하나를 받아 비교할 숫자(또는 null)를 돌려주는 함수
     //       lowerIsBetter - true면 낮을수록 1위(가격), false면 높을수록 1위
-    // 출력: 1위 메뉴 id (같으면 앞의 메뉴), 값이 모두 null이면 null
+    // 출력: 1위 메뉴 id (1위가 여럿이면 앞의 메뉴, null인 값은 순위에서 뺌)
+    //       모든 메뉴의 값이 같으면(모두 null, 모두 0 포함) 강조할 1위가 없으므로 null
     // 오류: 없음
     pickBest: function (rows, getValue, lowerIsBetter) {
+        let allSame = true;
+        for (let i = 1; i < rows.length; i++) {
+            if (getValue(rows[i]) !== getValue(rows[0])) {
+                allSame = false;
+            }
+        }
+        if (allSame) {
+            return null;
+        }
         let bestId = null;
         let bestValue = null;
         for (let i = 0; i < rows.length; i++) {
@@ -96,8 +106,8 @@ const Compare = {
     // 출력: { typeId, typeName, tags: [{ id, label }],
     //         rows: [{ menu: MenuItem, tagPercents: { [tagId]: percent } }] (입력 순서대로),
     //         best: { price, rating, reviewCount, [tagId]: 1위 menuId } }
-    //       best.price는 낮을수록, 나머지는 높을수록 1위. 같으면 앞의 메뉴.
-    //       평점이 모두 null이면 best.rating은 넣지 않음
+    //       best.price는 낮을수록, 나머지는 높을수록 1위. 1위가 여럿이면 앞의 메뉴.
+    //       평점이 모두 null이거나 모든 메뉴의 값이 같으면(모두 0 포함) 그 항목은 넣지 않음
     // 오류: '2~4개 메뉴를 골라 주세요' / '메뉴를 찾을 수 없습니다'
     //       '같은 종류의 메뉴끼리만 비교할 수 있어요'
     compareMenus: function (menuIds) {
@@ -137,22 +147,26 @@ const Compare = {
             }
         }
 
+        // 1위가 있는 항목만 best에 넣는다 (pickBest가 null이면 넣지 않음)
         const best = {};
-        best.price = Compare.pickBest(rows, function (row) {
+        function addBest(key, getValue, lowerIsBetter) {
+            const menuId = Compare.pickBest(rows, getValue, lowerIsBetter);
+            if (menuId !== null) {
+                best[key] = menuId;
+            }
+        }
+        addBest('price', function (row) {
             return row.menu.price;
         }, true);
-        const bestRating = Compare.pickBest(rows, function (row) {
+        addBest('rating', function (row) {
             return row.menu.avgRating;
         }, false);
-        if (bestRating !== null) {
-            best.rating = bestRating;
-        }
-        best.reviewCount = Compare.pickBest(rows, function (row) {
+        addBest('reviewCount', function (row) {
             return row.menu.reviewCount;
         }, false);
         for (let i = 0; i < tags.length; i++) {
             const tagId = tags[i].id;
-            best[tagId] = Compare.pickBest(rows, function (row) {
+            addBest(tagId, function (row) {
                 return row.tagPercents[tagId];
             }, false);
         }
@@ -270,7 +284,8 @@ const Compare = {
     // 역할: 추천 이유 문구를 만든다 (계산에 쓴 값을 ' · '로 이어 붙임)
     //       예: "예산 4,000원 이하 · 평점 4.6 (리뷰 12개) · '고소해요' 75%"
     //       예산 부분은 budget이 있을 때만, 버튼 부분은 고른 버튼 중 비율이 가장 높은 것 하나만
-    //       (비율이 같으면 먼저 고른 버튼), 리뷰가 없으면 '리뷰 없음'
+    //       (비율이 같으면 먼저 고른 버튼, 가장 높은 비율이 0%면 버튼 부분은 넣지 않음)
+    //       리뷰가 없으면 평점 부분은 '아직 리뷰 없음'
     // 입력: condition - 검사를 마친 조건, menu - MenuItem, tagStats - 그 메뉴의 tagStats
     // 출력: 문자열
     // 오류: 없음
@@ -280,7 +295,7 @@ const Compare = {
             parts.push('예산 ' + condition.budget.toLocaleString('ko-KR') + '원 이하');
         }
         if (menu.avgRating === null) {
-            parts.push('리뷰 없음');
+            parts.push('아직 리뷰 없음');
         } else {
             parts.push('평점 ' + menu.avgRating.toFixed(1) + ' (리뷰 ' + menu.reviewCount + '개)');
         }
@@ -294,7 +309,7 @@ const Compare = {
                 }
             }
         }
-        if (bestTag !== null) {
+        if (bestTag !== null && bestTag.percent > 0) {
             parts.push('\'' + bestTag.label + '\' ' + bestTag.percent + '%');
         }
         return parts.join(' · ');

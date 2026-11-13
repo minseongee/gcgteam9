@@ -53,7 +53,8 @@ const Reviews = {
 
     // 역할: 저장된 리뷰를 화면에 줄 모양으로 만든다
     // 입력: review - reviews 항목, users - 회원 배열, evalTags - 평가 버튼 배열
-    // 출력: { id, userId, nickname, rating, comment, tags: [{ id, label }], createdAt }
+    // 출력: { id, userId, nickname, rating, comment, tags: [{ id, label }], createdAt, isSample }
+    //       isSample은 시연용 예시 리뷰면 true (화면에 '예시' 표시)
     // 오류: 없음
     makeReviewItem: function (review, users, evalTags) {
         let nickname = '';
@@ -75,7 +76,8 @@ const Reviews = {
             rating: review.rating,
             comment: review.comment,
             tags: tags,
-            createdAt: review.createdAt
+            createdAt: review.createdAt,
+            isSample: review.isSample === true
         };
     },
 
