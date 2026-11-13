@@ -36,6 +36,7 @@
   | `js/ui/common.js` | 화면 도우미 함수: `el`, `icon`, `renderHeader`, `renderTabBar`, `getQueryNumber`, `showMessage`, `showError`, `showNotice`, `formatPrice`, `formatRating`, `formatStars`, `areaBadge`, `loginUrl` |
   | `js/ui/<화면이름>.js` | 전역 이름 없음. 파일 전체를 `(function () { … })();`로 감싸 안의 변수·함수가 밖으로 나가지 않게 함 |
   | `js/mock/*.mock.js` | 진짜 모듈과 같은 이름(`Auth`, `Cafes`, `Reviews`, `Compare`, `Account`). 화면 개발용 가짜라 진짜 모듈 **대신** 불러옴(함께 불러오면 이름이 겹쳐 오류) |
+  | `js/test/run-tests.js` | 전역 이름 없음. 파일 전체를 `(function () { … })();`로 감쌈. html에서 불러오지 않고 F12 콘솔에 붙여 넣어 실행 |
 
 - **스크립트 불러오는 순서** (모든 html 파일 공통, `</body>` 바로 위):
 
@@ -78,6 +79,7 @@ project/
     account.js          D. 계정·즐겨찾기·운영
     ui/                 화면별 스크립트 (common.js, home.js, search.js …)
     mock/               화면 개발용 가짜 모듈 (cafes.mock.js 등, 진짜 모듈 대신 script 태그를 바꿔 끼움)
+    test/               기능 테스트 (run-tests.js: 콘솔에 붙여 넣어 실행, html에서 불러오지 않음, 케이스는 docs/test-cases.md)
   docs/                 설계 문서 (이 폴더)
 ```
 
