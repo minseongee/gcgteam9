@@ -1004,3 +1004,36 @@ select.input {
 .review-counter {
     align-self: flex-end;
 }
+
+/* 로그인 */
+.login-intro {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding-top: 8px;
+}
+
+.login-title {
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.login-desc {
+    font-size: 14px;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.login-input {
+    min-height: 48px;
+    font-weight: 400;
+}
+
+.login-foot {
+    font-size: 13px;
+    text-align: center;
+}
