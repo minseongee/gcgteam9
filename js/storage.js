@@ -9,6 +9,9 @@ const DataStore = {
     // load / save에 넘길 수 있는 키 이름 (data.md 1절 표)
     keys: ['users', 'cafes', 'menuTypes', 'evalTags', 'menus', 'reviews', 'favorites', 'compareBox'],
 
+    // data.js에서만 정하고 아무 기능도 고치지 않는 고정 데이터. 열 때마다 data.js 값으로 다시 맞춘다 (data.md 1절)
+    fixedKeys: ['menuTypes', 'evalTags'],
+
     // 역할: 키 이름이 목록에 있는지 확인한다 (DataStore 안에서만 사용)
     // 입력: key - 키 이름
     // 출력: 없음
@@ -20,11 +23,16 @@ const DataStore = {
     },
 
     // 역할: 처음 실행이면 SEED_DATA를 localStorage에 복사한다
+    //       고정 데이터(fixedKeys)는 처음이 아니어도 매번 SEED_DATA로 덮어써서, data.js를 고치면 바로 반영되게 한다
     // 입력: 없음
     // 출력: 없음
-    // 오류: 없음 ('cafe9.initialized'가 이미 있으면 아무것도 하지 않음)
+    // 오류: 없음 ('cafe9.initialized'가 이미 있으면 고정 데이터만 다시 맞춤)
     init: function () {
         if (localStorage.getItem(DataStore.prefix + 'initialized') !== null) {
+            for (let i = 0; i < DataStore.fixedKeys.length; i++) {
+                const key = DataStore.fixedKeys[i];
+                localStorage.setItem(DataStore.prefix + key, JSON.stringify(SEED_DATA[key]));
+            }
             return;
         }
         for (let i = 0; i < DataStore.keys.length; i++) {

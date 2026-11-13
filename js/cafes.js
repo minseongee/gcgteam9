@@ -307,9 +307,7 @@ const Cafes = {
             const typeTags = [];
             const commonTags = [];
             for (let j = 0; j < evalTags.length; j++) {
-                // data.js를 고친 뒤 DataStore.reset()을 안 해 oppositeId가 없는 옛 데이터면 null로 본다
-                const oppositeId = evalTags[j].oppositeId === undefined ? null : evalTags[j].oppositeId;
-                const tag = { id: evalTags[j].id, label: evalTags[j].label, oppositeId: oppositeId };
+                const tag = { id: evalTags[j].id, label: evalTags[j].label, oppositeId: evalTags[j].oppositeId };
                 if (evalTags[j].typeId === menuTypes[i].id) {
                     typeTags.push(tag);
                 } else if (evalTags[j].typeId === null) {
