@@ -63,10 +63,15 @@
             const tag = type.tags[i];
             tasteBox.appendChild(makeChip(tag.label, state.tagIds.includes(tag.id), function () {
                 const index = state.tagIds.indexOf(tag.id);
-                if (index === -1) {
-                    state.tagIds.push(tag.id);
-                } else {
+                if (index !== -1) {
                     state.tagIds.splice(index, 1);
+                } else {
+                    // 반대 버튼이 켜져 있으면 끄고 이 버튼을 켠다 (예: '연해요'를 누르면 '진해요'가 꺼짐)
+                    const oppositeId = findOppositeTagId(type.tags, tag);
+                    state.tagIds = state.tagIds.filter(function (id) {
+                        return id !== oppositeId;
+                    });
+                    state.tagIds.push(tag.id);
                 }
                 renderTastes();
             }));

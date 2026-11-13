@@ -87,7 +87,7 @@
                     state.tagIds.splice(index, 1);
                 } else {
                     // 반대 버튼이 켜져 있으면 끄고 이 버튼을 켠다 (예: '연해요'를 누르면 '진해요'가 꺼짐)
-                    const oppositeId = findOppositeId(type, tag);
+                    const oppositeId = findOppositeTagId(type.tags, tag);
                     state.tagIds = state.tagIds.filter(function (id) {
                         return id !== oppositeId;
                     });
@@ -101,30 +101,6 @@
         paint();
         section.appendChild(chips);
         return section;
-    }
-
-    // 역할: 같은 타입 안에서 뜻이 반대인 평가 버튼의 id를 찾는다
-    // 입력: type - 메뉴 타입 { id, name, tags }, tag - 누른 버튼 { id, label }
-    // 출력: 반대 버튼 id, 없으면 null
-    function findOppositeId(type, tag) {
-        // ponytail: 버튼 이름으로 짝을 짓는다. data.js의 이름을 바꾸면 여기도 고쳐야 함 (data.md에 짝 정보를 두면 없앨 수 있음)
-        const pairs = [
-            ['진해요', '연해요'],
-            ['달아요', '덜 달아요']
-        ];
-        for (let i = 0; i < pairs.length; i++) {
-            const at = pairs[i].indexOf(tag.label);
-            if (at === -1) {
-                continue;
-            }
-            const oppositeLabel = pairs[i][1 - at];
-            for (let j = 0; j < type.tags.length; j++) {
-                if (type.tags[j].label === oppositeLabel) {
-                    return type.tags[j].id;
-                }
-            }
-        }
-        return null;
     }
 
     // 역할: 한줄평 입력칸과 글자 수 표시를 만든다
