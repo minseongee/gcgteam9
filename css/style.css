@@ -831,3 +831,120 @@ select.input {
 .list-group > .list-head:not(:first-child) {
     border-top: 1px solid var(--line-soft);
 }
+
+/* 메뉴 상세 */
+.menu-info {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.menu-meta {
+    font-size: 13px;
+}
+
+.menu-name {
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.menu-price {
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.menu-summary {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.menu-score {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    min-width: 84px;
+}
+
+.menu-score-number {
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.menu-score-number.is-none {
+    color: var(--muted);
+}
+
+.menu-score-stars {
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 1px;
+}
+
+.menu-bars {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+}
+
+.menu-bar {
+    display: grid;
+    grid-template-columns: 88px 1fr 64px;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+}
+
+.menu-bar-track {
+    height: 10px;
+    border-radius: 5px;
+    background: var(--line-soft);
+    overflow: hidden;
+}
+
+.menu-bar-fill {
+    height: 100%;
+    background: var(--accent);
+}
+
+.menu-review {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.menu-review-top {
+    font-size: 13px;
+}
+
+.menu-review-who {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.menu-sample {
+    padding: 1px 6px;
+    border-radius: 4px;
+    background: var(--line-soft);
+    color: var(--muted);
+    font-size: 11px;
+}
+
+.menu-review-stars {
+    font-size: 13px;
+    font-weight: 400;
+}
+
+.menu-review-text {
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.menu-actions {
+    grid-template-columns: 1fr 2fr;
+}
