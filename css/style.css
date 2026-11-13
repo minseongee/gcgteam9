@@ -780,3 +780,54 @@ select.input {
 .search-box-go {
     font-weight: 700;
 }
+
+/* 카페 상세 */
+.cafe-fav-btn {
+    color: var(--accent);
+}
+
+.cafe-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.cafe-name {
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.cafe-info {
+    display: grid;
+    grid-template-columns: 64px 1fr;
+    row-gap: 6px;
+    margin: 0;
+    font-size: 14px;
+}
+
+.cafe-info dd {
+    margin: 0;
+}
+
+.cafe-map-buttons {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    margin-top: 4px;
+}
+
+.cafe-menu-right {
+    display: flex;
+    flex-shrink: 0;
+    gap: 12px;
+    font-size: 14px;
+}
+
+.cafe-menu-price {
+    width: 64px;
+    text-align: right;
+}
+
+.list-group > .list-head:not(:first-child) {
+    border-top: 1px solid var(--line-soft);
+}
