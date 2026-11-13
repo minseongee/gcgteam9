@@ -172,16 +172,19 @@
 
 ## 8. 화면 ↔ 함수 연결표
 
-| 화면 | 주로 부르는 함수 |
+화면 스크립트(`js/ui/*.js`)가 부르는 기능 함수 전체입니다. (`js/ui/common.js`의 화면 도우미 함수는 뺐습니다. `rules.md` 3절 참고)
+`Auth.getCurrentUser`는 로그인했는지 확인할 때 쓰고, 로그인 안 했으면 `login.html?next=…`로 보냅니다.
+
+| 화면 | 부르는 함수 |
 | --- | --- |
 | 홈 `index.html` | `Cafes.searchCafes`, `Cafes.getMenusByType` |
-| 검색 결과 `search.html` | `Cafes.searchMenus`, `Cafes.searchCafes`, `Cafes.getMenuTypes`, `Compare.addToBox` |
-| 카페 상세 `cafe.html` | `Cafes.getCafe`, `Cafes.getMapLinks`, `Account.toggleFavorite` |
-| 메뉴 상세 `menu.html` | `Cafes.getMenu`, `Reviews.getReviewSummary`, `Compare.addToBox` |
-| 리뷰 쓰기 `review.html` | `Cafes.getMenu`, `Cafes.getMenuTypes`, `Reviews.getMyReview`, `Reviews.saveReview` |
-| 비교 `compare.html` | `Compare.getBox`, `Compare.compareMenus`, `Compare.removeFromBox` |
+| 검색 결과 `search.html` | `Cafes.searchMenus`, `Cafes.searchCafes`, `Cafes.getMenuTypes`, `Compare.getBox`, `Compare.addToBox`, `Compare.removeFromBox` |
+| 카페 상세 `cafe.html` | `Cafes.getCafe`, `Cafes.getMapLinks`, `Account.isFavorite`, `Account.toggleFavorite`, `Auth.getCurrentUser` |
+| 메뉴 상세 `menu.html` | `Cafes.getMenu`, `Reviews.getReviewSummary`, `Compare.addToBox`, `Account.isFavorite`, `Account.toggleFavorite`, `Auth.getCurrentUser` |
+| 리뷰 쓰기 `review.html` | `Cafes.getMenu`, `Cafes.getMenuTypes`, `Reviews.getMyReview`, `Reviews.saveReview`, `Auth.getCurrentUser` |
+| 비교 `compare.html` | `Compare.getBox`, `Compare.compareMenus`, `Compare.removeFromBox`, `Cafes.getMenu` |
 | 추천 `recommend.html` | `Cafes.getMenuTypes`, `Compare.recommend` |
 | 지도 `map.html` | `Cafes.getMapPins` |
 | 로그인 `login.html` | `Account.login`, `Account.signup` |
-| 마이 `mypage.html` | `Auth.getCurrentUser`, `Account.getFavorites`, `Reviews.getMyReviews`, `Account.logout` |
-| 사장 관리 `owner.html` | `Account.getMyCafe`, `Cafes.getCafe`, `Account.updateCafe`, `Account.addMenu`, `Account.updatePrice` |
+| 마이 `mypage.html` | `Auth.getCurrentUser`, `Account.getFavorites`, `Account.getMyCafe`, `Reviews.getMyReviews`, `Reviews.deleteReview`, `Account.logout` |
+| 사장 관리 `owner.html` | `Auth.getCurrentUser`, `Account.getMyCafe`, `Cafes.getCafe`, `Cafes.getMenuTypes`, `Account.updateCafe`, `Account.addMenu`, `Account.updatePrice` |
