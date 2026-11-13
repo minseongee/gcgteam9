@@ -948,3 +948,59 @@ select.input {
 .menu-actions {
     grid-template-columns: 1fr 2fr;
 }
+
+/* 리뷰 쓰기 */
+#app.review-form {
+    gap: 28px;
+}
+
+.review-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.review-menu-name {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.review-q {
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.review-q-note {
+    font-weight: 400;
+}
+
+.review-stars {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.review-star {
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: #D9CFC4;
+    font-size: 38px;
+    line-height: 1;
+}
+
+.review-star.is-on {
+    color: var(--star);
+}
+
+.review-star-label {
+    margin-left: 10px;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.review-counter {
+    align-self: flex-end;
+}
