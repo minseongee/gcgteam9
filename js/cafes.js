@@ -1,6 +1,6 @@
 // A. 카페·메뉴 조회: Cafes (검색, 상세, 메뉴 타입, 지도 핀·링크)
 // 데이터는 DataStore.load로만 읽습니다. 반환하는 객체·배열은 모두 새로 만든 값입니다.
-// 지도 핀·링크(getMapPins, getMapLinks)는 P1이라 아직 만들지 않았습니다.
+// 지도 핀 위치는 data.js의 MAP_BOUNDS(지도 이미지 모서리의 위도·경도)로 계산합니다.
 
 const Cafes = {
     // 카페 위치 값(area)을 화면에 보여 줄 글자로 바꾸는 표
@@ -316,5 +316,54 @@ const Cafes = {
             result.push({ id: menuTypes[i].id, name: menuTypes[i].name, tags: typeTags.concat(commonTags) });
         }
         return result;
+    },
+
+    // ───────── 지도 (P1) ─────────
+
+    // 역할: 지도 이미지 위에 찍을 카페 핀 위치를 계산한다
+    //       x = (경도 - 왼쪽 위 경도) ÷ (오른쪽 아래 경도 - 왼쪽 위 경도) × 100
+    //       y = (왼쪽 위 위도 - 위도) ÷ (왼쪽 위 위도 - 오른쪽 아래 위도) × 100
+    //       (위도는 북쪽일수록 커지므로 y는 왼쪽 위 위도에서 뺌)
+    // 입력: 없음 (카페 위도·경도와 MAP_BOUNDS 사용)
+    // 출력: [{ cafeId, name, area, x, y }] x, y는 지도 이미지 위 위치(%, 0~100)
+    //       x나 y가 0~100 밖인 카페는 뺌
+    //       MAP_BOUNDS가 아직 채워지지 않았으면(두 모서리의 위도나 경도가 같으면) 빈 배열
+    // 오류: 없음
+    getMapPins: function () {
+        const topLeft = MAP_BOUNDS.topLeft;
+        const bottomRight = MAP_BOUNDS.bottomRight;
+        if (topLeft.lng === bottomRight.lng || topLeft.lat === bottomRight.lat) {
+            return [];
+        }
+        const cafes = DataStore.load('cafes');
+        const result = [];
+        for (let i = 0; i < cafes.length; i++) {
+            const x = (cafes[i].lng - topLeft.lng) / (bottomRight.lng - topLeft.lng) * 100;
+            const y = (topLeft.lat - cafes[i].lat) / (topLeft.lat - bottomRight.lat) * 100;
+            if (x < 0 || x > 100 || y < 0 || y > 100) {
+                continue;
+            }
+            result.push({ cafeId: cafes[i].id, name: cafes[i].name, area: cafes[i].area, x: x, y: y });
+        }
+        return result;
+    },
+
+    // 역할: 카카오맵 '지도에서 보기'·'길찾기' 링크를 만든다
+    //       view:  https://map.kakao.com/link/map/카페이름,위도,경도
+    //       route: https://map.kakao.com/link/to/카페이름,위도,경도
+    //       카페 이름은 encodeURIComponent로 감쌈
+    // 입력: cafeId - 카페 id (숫자)
+    // 출력: { view, route }
+    // 오류: 없는 id면 '카페를 찾을 수 없습니다'
+    getMapLinks: function (cafeId) {
+        const cafe = Cafes.findById(DataStore.load('cafes'), cafeId);
+        if (cafe === null) {
+            throw new Error('카페를 찾을 수 없습니다');
+        }
+        const place = encodeURIComponent(cafe.name) + ',' + cafe.lat + ',' + cafe.lng;
+        return {
+            view: 'https://map.kakao.com/link/map/' + place,
+            route: 'https://map.kakao.com/link/to/' + place
+        };
     }
 };
