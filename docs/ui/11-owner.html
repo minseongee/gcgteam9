@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="ko">
+<!-- 디자인 목업(참고용). 인라인 스타일과 예시 데이터로 된 모양 견본입니다. 구현 방법은 docs/ui/README.md 참고 -->
+<head>
+<meta charset="utf-8">
+<title>사장 관리</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#6B3B1F}a:hover{color:#4A2814}
+.tab{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:11px;font-weight:500;text-decoration:none;color:#6B625A}
+.field{display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:500;color:#6B625A}
+.field input,.field select{height:44px;box-sizing:border-box;padding:0 12px;border-radius:10px;border:1px solid #E6DED4;background:#FFFFFF;font-family:inherit;font-size:15px;color:#1E1A16;font-weight:400}
+.mrow{display:grid;grid-template-columns:1fr 96px 56px;gap:8px;align-items:center;padding:10px 16px;border-top:1px solid #EFE8DF}
+.mrow input{height:40px;box-sizing:border-box;width:100%;padding:0 8px;border-radius:8px;border:1px solid #E6DED4;font-family:inherit;font-size:14px;text-align:right}
+.save{height:40px;border-radius:8px;border:1px solid #6B3B1F;background:#FFFFFF;color:#6B3B1F;font-family:inherit;font-size:13px}
+</style>
+</head>
+<body>
+<div style="width: 390px; height: 844px; box-sizing: border-box; display: flex; flex-direction: column; background: #FAF7F2; font-family: 'Noto Sans KR', system-ui, sans-serif; color: #1E1A16; overflow: hidden">
+<header style="height: 56px; flex-shrink: 0; display: flex; align-items: center; padding: 0 4px">
+<a href="10-mypage.html" aria-label="뒤로" style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; color: #1E1A16"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg></a>
+<span style="font-size: 16px; font-weight: 700">내 카페 관리 · 카페 A</span>
+</header>
+<main style="flex: 1; overflow-y: auto; padding: 4px 20px 24px; display: flex; flex-direction: column; gap: 22px">
+<section style="display: flex; flex-direction: column; gap: 12px">
+<h2 style="margin: 0; font-size: 16px; font-weight: 700">카페 정보</h2>
+<label class="field">카페 이름<input type="text" value="카페 A"></label>
+<label class="field">위치 설명<input type="text" value="[건물명] 1층"></label>
+<label class="field">영업시간<input type="text" value="평일 [00:00–00:00]"></label>
+<button type="button" style="height: 44px; border-radius: 12px; border: 1px solid #6B3B1F; background: #FFFFFF; color: #6B3B1F; font-family: inherit; font-size: 14px; font-weight: 500">카페 정보 저장</button>
+</section>
+<section style="display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; justify-content: space-between; align-items: baseline">
+<h2 style="margin: 0; font-size: 16px; font-weight: 700">메뉴 · 가격</h2>
+<span style="font-size: 12px; color: #6B625A">가격을 고치고 '변경'</span>
+</div>
+<div style="background: #FFFFFF; border: 1px solid #E6DED4; border-radius: 14px; overflow: hidden">
+<div class="mrow" style="border-top: 0"><span style="display: flex; flex-direction: column"><span style="font-size: 14px; font-weight: 500">아이스 아메리카노</span><span style="font-size: 12px; color: #6B625A">커피</span></span><label style="position: relative"><span style="position: absolute; left: -9999px">아이스 아메리카노 가격</span><input type="number" value="2500"></label><button type="button" class="save">변경</button></div>
+<div class="mrow"><span style="display: flex; flex-direction: column"><span style="font-size: 14px; font-weight: 500">카페라떼</span><span style="font-size: 12px; color: #6B625A">커피</span></span><label style="position: relative"><span style="position: absolute; left: -9999px">카페라떼 가격</span><input type="number" value="3000"></label><button type="button" class="save">변경</button></div>
+<div class="mrow"><span style="display: flex; flex-direction: column"><span style="font-size: 14px; font-weight: 500">초코 라떼</span><span style="font-size: 12px; color: #6B625A">논커피 라떼</span></span><label style="position: relative"><span style="position: absolute; left: -9999px">초코 라떼 가격</span><input type="number" value="3300"></label><button type="button" class="save">변경</button></div>
+</div>
+</section>
+<section style="display: flex; flex-direction: column; gap: 12px; padding: 16px; border-radius: 14px; border: 1px dashed #6B3B1F; background: #FFFFFF">
+<h2 style="margin: 0; font-size: 16px; font-weight: 700">새 메뉴 추가</h2>
+<label class="field">메뉴 이름<input type="text" placeholder="예: 바닐라 라떼"></label>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+<label class="field">메뉴 타입<select><option>커피</option><option>논커피 라떼</option><option>차</option><option>에이드·스무디</option><option>디저트</option></select></label>
+<label class="field">가격(원)<input type="number" placeholder="0"></label>
+</div>
+<label class="field">옵션 <span style="font-weight: 400">(선택)</span><input type="text" placeholder="예: 샷 추가 +500"></label>
+<button type="button" style="height: 48px; border-radius: 12px; border: 0; background: #6B3B1F; color: #FFFFFF; font-family: inherit; font-size: 15px; font-weight: 700">메뉴 추가</button>
+</section>
+</main>
+<nav aria-label="하단 메뉴" style="height: 64px; flex-shrink: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); background: #FFFFFF; border-top: 1px solid #E6DED4">
+<a href="01-home.html" class="tab"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"></path></svg><span>홈</span></a>
+<a href="08-map.html" class="tab"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"></path><circle cx="12" cy="9.5" r="2.5"></circle></svg><span>지도</span></a>
+<a href="06-compare.html" class="tab"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="7" height="16" rx="1.5"></rect><rect x="14" y="4" width="7" height="16" rx="1.5"></rect></svg><span>비교</span></a>
+<a href="07-recommend.html" class="tab"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"></path></svg><span>추천</span></a>
+<a href="10-mypage.html" class="tab" style="color: #6B3B1F" aria-current="page"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"></path></svg><span>마이</span></a>
+</nav>
+</div>
+</body>
+</html>

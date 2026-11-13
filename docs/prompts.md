@@ -5,6 +5,7 @@
 >
 > - Claude Code·Cursor처럼 레포를 직접 읽는 도구: 프롬프트를 그대로 붙여 넣습니다.
 > - ChatGPT·Claude 웹 채팅: `docs/rules.md`, `docs/interface.md`, `docs/data.md`와 프롬프트에 적힌 파일을 **첨부**한 뒤 붙여 넣습니다.
+> - 화면 단계(3단계)에서는 `docs/ui/`의 목업 HTML과 `docs/ui/README.md`도 함께 줍니다.
 > - `[ ]` 안은 상황에 맞게 바꿉니다.
 
 ---
@@ -222,8 +223,8 @@ js/mock/ 폴더에 파일별로 만들어 줘 (cafes.mock.js, reviews.mock.js, c
 ### 3-1. 공통 스타일과 하단 탭 `css/style.css`, `js/ui/common.js`
 
 ```text
-[디자인 캔버스의 홈 화면 목업 캡처 첨부]
-rules.md 7절을 따라 공통 화면을 만들어 줘.
+docs/ui/README.md와 목업 docs/ui/01-home.html, docs/ui/04-menu.html을 먼저 읽어 줘.
+목업에 인라인 스타일로 적힌 색·글꼴·간격·모서리·그림자를 rules.md 7절과 맞춰 공통 클래스로 뽑아서 공통 화면을 만들어 줘.
 1) css/style.css: 색·글꼴 변수(:root), body는 max-width 480px 가운데 정렬, 상단 바, 하단 탭(고정, 5칸),
    카드, 칩(선택됨/안 됨), 버튼(채움/테두리), 입력칸, 배지(교내/근처), 별점 색, 표 가로 스크롤 상자.
    누르는 것은 모두 높이 44px 이상. 클래스 이름은 짧고 뜻이 보이게(.card, .chip, .chip.is-selected …).
@@ -241,12 +242,13 @@ rules.md 7절을 따라 공통 화면을 만들어 줘.
 
 ### 3-2 ~ 3-12. 화면 하나씩 (공통 틀)
 
-아래 틀에 화면별 내용(다음 표)을 채워 씁니다. **화면 목업 캡처를 꼭 첨부**합니다.
+아래 틀에 화면별 내용(다음 표)을 채워 씁니다. 목업 파일은 표의 '목업' 열을 봅니다. 브라우저로 목업을 열어 눌러 보면서 결과와 비교하면 좋습니다.
 
 ```text
-[해당 화면 목업 캡처 첨부]
+docs/ui/README.md와 목업 docs/ui/[목업 파일]을 먼저 읽어 줘.
 [화면 이름] 화면을 만들어 줘. 고칠 파일은 [html 파일]과 [js/ui/파일.js] 두 개뿐이야.
-- 첨부한 목업과 같은 배치·문구로. 공통 모양은 css/style.css의 클래스와 js/ui/common.js의 도우미를 써.
+- 목업과 같은 배치·문구로. 단, README.md의 '목업과 실제 구현의 차이'대로 인라인 스타일은 클래스로,
+  예시 값은 함수 호출 결과로, 목업 링크(03-cafe.html 등)는 실제 파일+id(cafe.html?id=)로 바꿔. 공통 모양은 css/style.css의 클래스와 js/ui/common.js의 도우미를 써.
   이 화면에만 필요한 스타일은 style.css 맨 아래에 '/* [화면 이름] */' 주석 아래 추가해도 돼.
 - 데이터는 interface.md 8절에 적힌 함수로만 가져와. DataStore나 localStorage를 직접 쓰지 마.
 - 기능 함수가 오류를 던지면 try/catch로 받아 showError로 보여 줘.
@@ -256,19 +258,19 @@ rules.md 7절을 따라 공통 화면을 만들어 줘.
 다 만들면 이 화면을 확인하는 순서(어디를 눌러 보면 되는지)를 5줄로 알려 줘.
 ```
 
-| 번호 | 화면 | 파일 | 화면 요구사항 (틀에 붙여 넣을 내용) |
-| --- | --- | --- | --- |
-| 3-2 | 홈 | `index.html`, `js/ui/home.js` | 검색창(누르면 search.html), '오늘 뭐 마시지?' 카드(recommend.html). '카페 목록/메뉴 목록' 전환 버튼. 카페 목록: Cafes.searchCafes('', area)로 평점순, 전체·교내·근처 칩, 카드 누르면 cafe.html?id=. 메뉴 목록: Cafes.getMenusByType()로 타입별 묶음, 위쪽 타입 칩을 누르면 그 묶음으로 스크롤, 줄 누르면 menu.html?id=. |
-| 3-3 | 검색 결과 | `search.html`, `js/ui/search.js` | 위쪽 검색어 입력(?q= 로도 받기). 메뉴/카페 탭. 메뉴 탭: 타입 칩(전체+5개), 정렬 선택(평점·가격·리뷰). 카드: 메뉴명, 카페·교내/근처·가격, 별점(리뷰 수), topTag. 카드 오른쪽 담기 버튼 → Compare.addToBox, 담긴 건 체크 표시. 아래에 '비교함 n/4 · 비교하기' 막대(compare.html). |
-| 3-4 | 카페 상세 | `cafe.html`, `js/ui/cafe.js` | ?id= 로 Cafes.getCafe. 이름·배지·위치·영업시간·평균 평점. 즐겨찾기 하트(Account.toggleFavorite, 로그인 안 했으면 login.html로). 카카오맵 '지도에서 보기'·'길찾기' 버튼(Cafes.getMapLinks, 새 탭). 메뉴를 타입별로 묶어 목록, 줄 누르면 menu.html?id=. |
-| 3-5 | 메뉴 상세 | `menu.html`, `js/ui/menu.js` | ?id= 로 Cafes.getMenu, Reviews.getReviewSummary. 카페 이름(cafe.html 링크)·타입·가격·옵션. 큰 평점 숫자, 별, 리뷰 수. 평가 버튼별 비율 막대(상위 5개). 리뷰 목록(닉네임, 별, 날짜, 버튼 칩, 한줄평, 예시 리뷰는 '예시' 표시). 아래 고정: '비교함 담기', '리뷰 쓰기'(review.html?menuId=, 로그인 안 했으면 login.html). |
-| 3-6 | 리뷰 쓰기 | `review.html`, `js/ui/review.js` | ?menuId= 로 메뉴 정보. 별 5개 버튼(누르면 선택), 그 메뉴 타입 + 공통 평가 버튼을 칩으로(여러 개 토글), 한줄평 textarea(50자, 글자 수 표시). 이미 쓴 리뷰가 있으면(Reviews.getMyReview) 채워서 열기. 저장 → Reviews.saveReview 후 menu.html?id= 로. 로그인 안 했으면 login.html로. |
-| 3-7 | 로그인 | `login.html`, `js/ui/login.js` | 로그인/회원가입 전환. 로그인: 아이디·비밀번호. 회원가입: 아이디·비밀번호·닉네임. "학교 과제용이라 비밀번호가 암호화되지 않아요. 실제 비밀번호를 쓰지 마세요" 안내 상자. 성공하면 ?next= 주소로, 없으면 mypage.html로. |
-| 3-8 | 마이 | `mypage.html`, `js/ui/mypage.js` | 로그인 안 했으면 login.html?next=mypage.html. 닉네임·역할(일반 회원/카페 사장). 사장이면 '내 카페 관리' 카드(owner.html). 즐겨찾기/내 리뷰 탭: Account.getFavorites(카페·메뉴 나눠서), Reviews.getMyReviews. 로그아웃 버튼. |
-| 3-9 | 사장 관리 | `owner.html`, `js/ui/owner.js` | 사장이 아니면 안내 후 홈으로. Account.getMyCafe. 카페 정보 입력칸(이름·위치 설명·영업시간)+저장(Account.updateCafe). 메뉴 목록마다 가격 입력칸+'변경'(Account.updatePrice). 새 메뉴 추가 폼(이름, 타입 select, 가격, 옵션 → Account.addMenu). 성공하면 짧은 안내 문구. |
-| 3-10 | 지도 | `map.html`, `js/ui/map.js` | 지도 이미지(img/campus-map.png)를 화면보다 크게, 스크롤 상자(overflow:auto) 안에. Cafes.getMapPins로 핀을 position:absolute, left/top %로. 교내 핀은 꽉 찬 색, 근처 핀은 테두리만. 핀(44px 이상) 누르면 cafe.html?id=. 위쪽 전체·교내·근처 칩. 이미지가 아직 없으면 회색 상자 + "지도 이미지 준비 중". |
-| 3-11 | 비교 | `compare.html`, `js/ui/compare.js` | Compare.getBox로 담긴 메뉴를 칩으로(x로 빼기 → removeFromBox), '+ 추가'는 search.html. 2개 미만이면 "메뉴를 2개 이상 담아 주세요" 안내. 2개 이상이면 Compare.compareMenus 결과를 표로: 열=메뉴, 행=가격·평점·리뷰 수·평가 버튼들. best에 해당하는 칸을 강조. 표는 가로 스크롤 상자. |
-| 3-12 | 추천 | `recommend.html`, `js/ui/recommend.js` | 1.메뉴 타입 칩(필수) 2.예산 입력+빠른 칩(2,000·3,000·4,000·5,000) 3.원하는 맛 칩(고른 타입의 버튼+공통, 최대 3개) 4.위치(전체·교내만·근처만). '추천받기' → Compare.recommend. 결과 카드 3개: 순위, 메뉴·카페, 별점·가격, reason 문구, 누르면 menu.html?id=. 결과 없으면 "조건에 맞는 메뉴가 없어요. 예산을 늘려 보세요". |
+| 번호 | 화면 | 목업 | 파일 | 화면 요구사항 (틀에 붙여 넣을 내용) |
+| --- | --- | --- | --- | --- |
+| 3-2 | 홈 | `docs/ui/01-home.html` | `index.html`, `js/ui/home.js` | 검색창(누르면 search.html), '오늘 뭐 마시지?' 카드(recommend.html). '카페 목록/메뉴 목록' 전환 버튼. 카페 목록: Cafes.searchCafes('', area)로 평점순, 전체·교내·근처 칩, 카드 누르면 cafe.html?id=. 메뉴 목록: Cafes.getMenusByType()로 타입별 묶음, 위쪽 타입 칩을 누르면 그 묶음으로 스크롤, 줄 누르면 menu.html?id=. |
+| 3-3 | 검색 결과 | `docs/ui/02-search.html` | `search.html`, `js/ui/search.js` | 위쪽 검색어 입력(?q= 로도 받기). 메뉴/카페 탭. 메뉴 탭: 타입 칩(전체+5개), 정렬 선택(평점·가격·리뷰). 카드: 메뉴명, 카페·교내/근처·가격, 별점(리뷰 수), topTag. 카드 오른쪽 담기 버튼 → Compare.addToBox, 담긴 건 체크 표시. 아래에 '비교함 n/4 · 비교하기' 막대(compare.html). |
+| 3-4 | 카페 상세 | `docs/ui/03-cafe.html` | `cafe.html`, `js/ui/cafe.js` | ?id= 로 Cafes.getCafe. 이름·배지·위치·영업시간·평균 평점. 즐겨찾기 하트(Account.toggleFavorite, 로그인 안 했으면 login.html로). 카카오맵 '지도에서 보기'·'길찾기' 버튼(Cafes.getMapLinks, 새 탭). 메뉴를 타입별로 묶어 목록, 줄 누르면 menu.html?id=. |
+| 3-5 | 메뉴 상세 | `docs/ui/04-menu.html` | `menu.html`, `js/ui/menu.js` | ?id= 로 Cafes.getMenu, Reviews.getReviewSummary. 카페 이름(cafe.html 링크)·타입·가격·옵션. 큰 평점 숫자, 별, 리뷰 수. 평가 버튼별 비율 막대(상위 5개). 리뷰 목록(닉네임, 별, 날짜, 버튼 칩, 한줄평, 예시 리뷰는 '예시' 표시). 아래 고정: '비교함 담기', '리뷰 쓰기'(review.html?menuId=, 로그인 안 했으면 login.html). |
+| 3-6 | 리뷰 쓰기 | `docs/ui/05-review.html` | `review.html`, `js/ui/review.js` | ?menuId= 로 메뉴 정보. 별 5개 버튼(누르면 선택), 그 메뉴 타입 + 공통 평가 버튼을 칩으로(여러 개 토글), 한줄평 textarea(50자, 글자 수 표시). 이미 쓴 리뷰가 있으면(Reviews.getMyReview) 채워서 열기. 저장 → Reviews.saveReview 후 menu.html?id= 로. 로그인 안 했으면 login.html로. |
+| 3-7 | 로그인 | `docs/ui/09-login.html` | `login.html`, `js/ui/login.js` | 로그인/회원가입 전환. 로그인: 아이디·비밀번호. 회원가입: 아이디·비밀번호·닉네임. "학교 과제용이라 비밀번호가 암호화되지 않아요. 실제 비밀번호를 쓰지 마세요" 안내 상자. 성공하면 ?next= 주소로, 없으면 mypage.html로. |
+| 3-8 | 마이 | `docs/ui/10-mypage.html` | `mypage.html`, `js/ui/mypage.js` | 로그인 안 했으면 login.html?next=mypage.html. 닉네임·역할(일반 회원/카페 사장). 사장이면 '내 카페 관리' 카드(owner.html). 즐겨찾기/내 리뷰 탭: Account.getFavorites(카페·메뉴 나눠서), Reviews.getMyReviews. 로그아웃 버튼. |
+| 3-9 | 사장 관리 | `docs/ui/11-owner.html` | `owner.html`, `js/ui/owner.js` | 사장이 아니면 안내 후 홈으로. Account.getMyCafe. 카페 정보 입력칸(이름·위치 설명·영업시간)+저장(Account.updateCafe). 메뉴 목록마다 가격 입력칸+'변경'(Account.updatePrice). 새 메뉴 추가 폼(이름, 타입 select, 가격, 옵션 → Account.addMenu). 성공하면 짧은 안내 문구. |
+| 3-10 | 지도 | `docs/ui/08-map.html` | `map.html`, `js/ui/map.js` | 지도 이미지(img/campus-map.png)를 화면보다 크게, 스크롤 상자(overflow:auto) 안에. Cafes.getMapPins로 핀을 position:absolute, left/top %로. 교내 핀은 꽉 찬 색, 근처 핀은 테두리만. 핀(44px 이상) 누르면 cafe.html?id=. 위쪽 전체·교내·근처 칩. 이미지가 아직 없으면 회색 상자 + "지도 이미지 준비 중". |
+| 3-11 | 비교 | `docs/ui/06-compare.html` | `compare.html`, `js/ui/compare.js` | Compare.getBox로 담긴 메뉴를 칩으로(x로 빼기 → removeFromBox), '+ 추가'는 search.html. 2개 미만이면 "메뉴를 2개 이상 담아 주세요" 안내. 2개 이상이면 Compare.compareMenus 결과를 표로: 열=메뉴, 행=가격·평점·리뷰 수·평가 버튼들. best에 해당하는 칸을 강조. 표는 가로 스크롤 상자. |
+| 3-12 | 추천 | `docs/ui/07-recommend.html` | `recommend.html`, `js/ui/recommend.js` | 1.메뉴 타입 칩(필수) 2.예산 입력+빠른 칩(2,000·3,000·4,000·5,000) 3.원하는 맛 칩(고른 타입의 버튼+공통, 최대 3개) 4.위치(전체·교내만·근처만). '추천받기' → Compare.recommend. 결과 카드 3개: 순위, 메뉴·카페, 별점·가격, reason 문구, 누르면 menu.html?id=. 결과 없으면 "조건에 맞는 메뉴가 없어요. 예산을 늘려 보세요". |
 
 화면 하나 끝날 때마다 커밋: `feat : [화면 이름] 화면`
 
@@ -322,7 +324,7 @@ docs/rules.md, docs/interface.md, docs/data.md와 실제 코드(js/, html, css)�
 설계와 다른 곳을 전부 찾아 표로 정리해 줘.
 열: 문서 위치 | 코드 위치 | 무엇이 다른가 | 문서를 고칠지 코드를 고칠지 추천
 확인할 것: 함수 이름·입출력, 계층 규칙 위반(화면에서 DataStore·localStorage 직접 사용 등), 오류 메시지 문구,
-데이터 필드 이름, 금지된 기술(module, import, fetch, 외부 라이브러리), 코드 스타일 규칙(한 줄 if/for, ++ 섞어 쓰기).
+데이터 필드 이름, docs/ui 목업과 화면 배치·문구가 크게 다른 곳, 금지된 기술(module, import, fetch, 외부 라이브러리), 코드 스타일 규칙(한 줄 if/for, ++ 섞어 쓰기).
 아무것도 고치지 말고 표만 줘.
 ```
 

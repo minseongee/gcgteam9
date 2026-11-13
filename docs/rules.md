@@ -124,7 +124,8 @@ Auth (로그인·권한)    DataStore (읽기·쓰기 창구)
   | 글꼴 | `'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif` |
 
 - 아이콘은 이모지 대신 간단한 인라인 SVG를 씁니다.
-- 화면 목업: Claude 디자인 캔버스 「교내 카페 추천 사이트 · 화면별 UI (모바일)」. 화면을 만들 때 해당 목업 캡처를 AI에게 같이 줍니다.
+- 화면 목업: `docs/ui/`에 화면별 HTML(더블클릭으로 열림)로 들어 있습니다. 원본은 Claude 디자인 캔버스 「교내 카페 추천 사이트 · 화면별 UI (모바일)」입니다.
+  화면을 만들 때 해당 목업 파일을 AI에게 함께 주고, `docs/ui/README.md`의 '목업과 실제 구현의 차이'를 따릅니다.
 
 ## 8. 코드 스타일
 

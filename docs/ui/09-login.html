@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="ko">
+<!-- 디자인 목업(참고용). 인라인 스타일과 예시 데이터로 된 모양 견본입니다. 구현 방법은 docs/ui/README.md 참고 -->
+<head>
+<meta charset="utf-8">
+<title>로그인</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#6B3B1F}a:hover{color:#4A2814}
+.tab{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:11px;font-weight:500;text-decoration:none;color:#6B625A}
+.field{display:flex;flex-direction:column;gap:6px;font-size:14px;font-weight:500}
+.field input{height:48px;box-sizing:border-box;padding:0 14px;border-radius:12px;border:1px solid #E6DED4;background:#FFFFFF;font-family:inherit;font-size:15px;color:#1E1A16;font-weight:400}
+</style>
+</head>
+<body>
+<div style="width: 390px; height: 844px; box-sizing: border-box; display: flex; flex-direction: column; background: #FAF7F2; font-family: 'Noto Sans KR', system-ui, sans-serif; color: #1E1A16; overflow: hidden">
+<header style="height: 56px; flex-shrink: 0; display: flex; align-items: center; padding: 0 4px">
+<a href="10-mypage.html" aria-label="뒤로" style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; color: #1E1A16"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg></a>
+</header>
+<main style="flex: 1; overflow-y: auto; padding: 8px 24px 24px; display: flex; flex-direction: column; gap: 24px">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<h1 style="margin: 0; font-size: 24px; font-weight: 700">로그인</h1>
+<p style="margin: 0; font-size: 14px; color: #6B625A">리뷰를 쓰고 즐겨찾기를 하려면 로그인하세요.</p>
+</div>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 4px; border-radius: 12px; background: #EFE8DF">
+<button type="button" style="height: 40px; border: 0; border-radius: 9px; background: #FFFFFF; font-family: inherit; font-size: 14px; font-weight: 700; color: #1E1A16">로그인</button>
+<button type="button" style="height: 40px; border: 0; border-radius: 9px; background: none; font-family: inherit; font-size: 14px; color: #6B625A">회원가입</button>
+</div>
+<form style="display: flex; flex-direction: column; gap: 16px">
+<label class="field">아이디<input type="text" autocomplete="username" placeholder="영문, 숫자 4~12자"></label>
+<label class="field">비밀번호<input type="password" autocomplete="current-password" placeholder="비밀번호"></label>
+<div style="display: flex; gap: 10px; padding: 12px 14px; border-radius: 12px; background: #FFF4E0; border: 1px solid #F0D9B0; font-size: 13px; line-height: 1.5; color: #5C3D00">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true" style="flex-shrink: 0; margin-top: 2px"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v5M12 16.5v.5"></path></svg>
+<span>학교 과제용 사이트라 비밀번호가 암호화되지 않아요. 실제로 쓰는 비밀번호는 입력하지 마세요.</span>
+</div>
+<a href="10-mypage.html" style="height: 52px; border-radius: 14px; background: #6B3B1F; color: #FFFFFF; text-decoration: none; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 700">로그인</a>
+</form>
+<p style="margin: 0; text-align: center; font-size: 13px; color: #6B625A">카페 사장님 계정은 팀에서 미리 만들어 드려요.</p>
+</main>
+<nav aria-label="하단 메뉴" style="height: 64px; flex-shrink: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); background: #FFFFFF; border-top: 1px solid #E6DED4">
+<a href="01-home.html" class="tab"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"></path></svg><span>홈</span></a>
+<a href="08-map.html" class="tab"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"></path><circle cx="12" cy="9.5" r="2.5"></circle></svg><span>지도</span></a>
+<a href="06-compare.html" class="tab"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="7" height="16" rx="1.5"></rect><rect x="14" y="4" width="7" height="16" rx="1.5"></rect></svg><span>비교</span></a>
+<a href="07-recommend.html" class="tab"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"></path></svg><span>추천</span></a>
+<a href="10-mypage.html" class="tab" style="color: #6B3B1F" aria-current="page"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"></path></svg><span>마이</span></a>
+</nav>
+</div>
+</body>
+</html>
