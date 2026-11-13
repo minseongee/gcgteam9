@@ -1037,3 +1037,87 @@ select.input {
     font-size: 13px;
     text-align: center;
 }
+
+/* 마이 */
+.my-logout {
+    min-height: 44px;
+    padding: 0 16px;
+    border: 0;
+    background: none;
+    color: var(--muted);
+    font-size: 14px;
+}
+
+.my-profile {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px;
+    border-radius: 16px;
+}
+
+.my-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.my-nickname {
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.my-role {
+    font-size: 13px;
+}
+
+.my-sub-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--muted);
+}
+
+.my-heart {
+    color: var(--accent);
+}
+
+.my-review {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.my-review-menu {
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.my-review-stars {
+    font-size: 13px;
+    font-weight: 400;
+}
+
+.my-review-text {
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.my-review-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    margin-top: 4px;
+}
+
+.my-review-actions .btn {
+    min-height: 44px;
+    font-size: 14px;
+}
