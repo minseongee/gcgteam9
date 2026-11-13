@@ -25,7 +25,6 @@
         input.type = type;
         input.autocomplete = autocomplete;
         input.placeholder = placeholder;
-        input.required = true;
         field.appendChild(input);
         return { field: field, input: input };
     }
@@ -53,11 +52,12 @@
         app.appendChild(switcher);
 
         const form = el('form', 'login-form');
+        // 빈칸·형식 검사는 Account가 하고 interface.md의 오류 문구를 돌려주므로, 브라우저 자체 검사는 끈다
+        form.noValidate = true;
         const loginId = makeField('아이디', 'text', 'username', '영문, 숫자 4~12자');
         const password = makeField('비밀번호', 'password', 'current-password', '비밀번호');
         const nickname = makeField('닉네임', 'text', 'nickname', '1~10자');
         nickname.field.hidden = true;
-        nickname.input.required = false;
         form.appendChild(loginId.field);
         form.appendChild(password.field);
         form.appendChild(nickname.field);
@@ -86,7 +86,6 @@
             title.textContent = isLogin ? '로그인' : '회원가입';
             submit.textContent = isLogin ? '로그인' : '가입하기';
             nickname.field.hidden = isLogin;
-            nickname.input.required = !isLogin;
             password.input.autocomplete = isLogin ? 'current-password' : 'new-password';
             password.input.placeholder = isLogin ? '비밀번호' : '4자 이상';
         }
