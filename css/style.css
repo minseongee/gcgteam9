@@ -1252,7 +1252,7 @@ a.cafe-card:focus-visible {
 /* 지도는 화면보다 크게 두고 상자 안에서 밀어 본다 */
 .map-canvas {
     position: relative;
-    width: 640px;
+    width: 900px;
 }
 
 .map-image {

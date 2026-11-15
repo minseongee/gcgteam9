@@ -10,6 +10,7 @@
 - localStorage 키는 모두 `cafe9.` 으로 시작합니다. 값은 `JSON.stringify`한 배열입니다.
 - `cafe9.initialized`가 있으면 다시 복사하지 않습니다. `DataStore.reset()`은 `cafe9.`으로 시작하는 키를 모두 지우고 다시 복사합니다(시연 전 초기화).
 - 단, **고정 데이터**인 `menuTypes`와 `evalTags`는 `data.js`에서만 정하고 어떤 기능도 고치지 않으므로, 페이지를 열 때마다 `DataStore.init()`이 `data.js` 값으로 다시 덮어씁니다. 이 둘은 `data.js`를 고치면 바로 반영됩니다.
+- 카페의 **위도·경도(`lat`, `lng`)**도 같은 이유로 페이지를 열 때마다 `data.js` 값으로 다시 맞춥니다(`DataStore.syncCafeLocations`). 사장이 고친 이름·위치 설명·영업시간은 그대로 둡니다.
 - 그 밖의 데이터(카페·메뉴·리뷰 등)는 `data.js`를 고친 뒤 콘솔에서 `DataStore.reset()`을 실행해야 바뀐 내용이 보입니다.
 
 | 키 (`DataStore.load` 에 넘기는 이름) | localStorage 키 | 처음 들어가는 곳 | 내용 |
@@ -133,16 +134,18 @@ Notion '기능별 상세'에 따라 아메리카노·카페라떼처럼 에스�
 
 ## 5. 지도 기준점 `MAP_BOUNDS`
 
-캠퍼스 지도 이미지(`img/campus-map.png`)의 왼쪽 위·오른쪽 아래 모서리의 실제 위도·경도입니다. 이미지는 **실제 축척, 북쪽이 위**인 것을 씁니다(예: 카카오맵 캡처).
+캠퍼스 지도 이미지(`img/campus-map.png`)의 왼쪽 위·오른쪽 아래 모서리의 실제 위도·경도입니다. 이미지는 **북쪽이 위**이고, 위도·경도를 그대로 비례해서 그렸기 때문에 `Cafes.getMapPins`의 단순 비율 계산(%)과 정확히 맞습니다.
 
 ```js
 const MAP_BOUNDS = {
-    topLeft: { lat: 0, lng: 0 },       // TODO: 지도 이미지를 정한 뒤 채움
-    bottomRight: { lat: 0, lng: 0 }    // TODO
+    topLeft: { lat: 35.8975, lng: 128.6020 },
+    bottomRight: { lat: 35.8835, lng: 128.6185 }
 };
 ```
 
-- 위도·경도는 구글 지도에서 그 지점을 오른쪽 클릭하면 나오는 숫자를 복사합니다.
+- 지도 이미지는 OpenStreetMap 데이터로 직접 그렸습니다. 만든 방법과 다시 그리는 법은 `docs/map/README.md`에 있습니다.
+- **이미지를 바꾸면 이 값도 같이 바꿔야** 핀이 제자리에 찍힙니다.
+- 카페 위도·경도는 카카오맵에서 그 카페를 검색해 나온 값을 씁니다(카카오맵 링크와 같은 기준).
 
 ## 6. `js/data.js` 모양
 

@@ -18,17 +18,17 @@ const SEED_DATA = {
     ],
     cafes: [
         { id: 1, ownerId: 1, name: '프롬프트 일청담점', area: 'campus', locationText: '일청담 근처',
-          lat: 0, lng: 0, openHours: '영업시간 확인 중',
-          photo: 'img/cafes/cafe-1.jpg' },    // TODO: 실제 위도·경도, 영업시간
+          lat: 35.88880352, lng: 128.61166015, openHours: '영업시간 확인 중',
+          photo: 'img/cafes/cafe-1.jpg' },    // TODO: 영업시간 (위도·경도는 카카오맵 기준)
         { id: 2, ownerId: 2, name: '생활관 카페', area: 'campus', locationText: '생활관',
           lat: 0, lng: 0, openHours: '영업시간 확인 중',
           photo: 'img/cafes/cafe-2.jpg' },    // TODO: 실제 위도·경도, 영업시간
         { id: 3, ownerId: 3, name: '할리스 쿱카페 크누라운지점', area: 'campus', locationText: '크누라운지',
-          lat: 0, lng: 0, openHours: '영업시간 확인 중',
-          photo: 'img/cafes/cafe-3.jpg' },    // TODO: 실제 위도·경도, 영업시간
+          lat: 35.88909757, lng: 128.61432278, openHours: '영업시간 확인 중',
+          photo: 'img/cafes/cafe-3.jpg' },    // TODO: 영업시간 (위도·경도는 카카오맵 기준)
         { id: 4, ownerId: 4, name: '메가MGC커피 나래관점', area: 'campus', locationText: '나래관',
-          lat: 0, lng: 0, openHours: '영업시간 확인 중',
-          photo: 'img/cafes/cafe-4.jpg' },    // TODO: 실제 위도·경도, 영업시간
+          lat: 35.8859832, lng: 128.60848355, openHours: '영업시간 확인 중',
+          photo: 'img/cafes/cafe-4.jpg' },    // TODO: 영업시간 (위도·경도는 카카오맵 기준)
         { id: 5, ownerId: 5, name: '빅핸즈 경북대점', area: 'nearby', locationText: '경북대 인근',
           lat: 0, lng: 0, openHours: '영업시간 확인 중',
           photo: 'img/cafes/cafe-5.jpg' }    // TODO: 실제 위도·경도, 영업시간
@@ -351,7 +351,8 @@ const SEED_DATA = {
     compareBox: []
 };
 
+// img/campus-map.png 의 왼쪽 위·오른쪽 아래 모서리 (docs/map/README.md)
 const MAP_BOUNDS = {
-    topLeft: { lat: 0, lng: 0 },       // TODO: 지도 이미지를 정한 뒤 채움
-    bottomRight: { lat: 0, lng: 0 }    // TODO
+    topLeft: { lat: 35.8975, lng: 128.6020 },
+    bottomRight: { lat: 35.8835, lng: 128.6185 }
 };

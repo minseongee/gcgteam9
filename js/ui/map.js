@@ -88,6 +88,11 @@
             const placeholder = el('div', 'map-placeholder', '지도 이미지 준비 중');
             canvas.replaceChild(placeholder, image);
         });
+        // 지도가 열리면 캠퍼스(지도 가운데)가 먼저 보이도록 스크롤을 가운데로 옮긴다
+        image.addEventListener('load', function () {
+            scroller.scrollLeft = (canvas.offsetWidth - scroller.clientWidth) / 2;
+            scroller.scrollTop = (canvas.offsetHeight - scroller.clientHeight) / 2;
+        });
         image.src = MAP_IMAGE;
         canvas.appendChild(image);
         canvas.appendChild(layer);

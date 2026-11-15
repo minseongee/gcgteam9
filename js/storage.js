@@ -33,6 +33,7 @@ const DataStore = {
                 const key = DataStore.fixedKeys[i];
                 localStorage.setItem(DataStore.prefix + key, JSON.stringify(SEED_DATA[key]));
             }
+            DataStore.syncCafeLocations();
             return;
         }
         for (let i = 0; i < DataStore.keys.length; i++) {
@@ -40,6 +41,25 @@ const DataStore = {
             localStorage.setItem(DataStore.prefix + key, JSON.stringify(SEED_DATA[key]));
         }
         localStorage.setItem(DataStore.prefix + 'initialized', 'true');
+    },
+
+    // 역할: 저장된 카페의 위도·경도(lat, lng)를 data.js 값으로 다시 맞춘다
+    //       위도·경도는 data.js에서만 정하고 어떤 기능도 고치지 않으므로, data.js를 고치면 바로 지도에 반영되게 한다
+    //       (사장이 고친 이름·위치 설명·영업시간은 그대로 둔다)
+    // 입력: 없음
+    // 출력: 없음
+    // 오류: 없음 (data.js에 없는 카페는 건드리지 않음)
+    syncCafeLocations: function () {
+        const cafes = DataStore.load('cafes');
+        for (let i = 0; i < cafes.length; i++) {
+            for (let k = 0; k < SEED_DATA.cafes.length; k++) {
+                if (SEED_DATA.cafes[k].id === cafes[i].id) {
+                    cafes[i].lat = SEED_DATA.cafes[k].lat;
+                    cafes[i].lng = SEED_DATA.cafes[k].lng;
+                }
+            }
+        }
+        DataStore.save('cafes', cafes);
     },
 
     // 역할: 키에 저장된 목록을 읽는다
