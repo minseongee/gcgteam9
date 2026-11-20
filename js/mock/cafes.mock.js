@@ -176,13 +176,12 @@ const Cafes = {
         return Cafes.copy(Cafes.pinList);
     },
 
-    // 역할: 카카오맵 링크 / 입력: cafeId / 출력: { view, route } / 오류: '카페를 찾을 수 없습니다'
+    // 역할: 카카오맵 링크 / 입력: cafeId / 출력: { view } / 오류: '카페를 찾을 수 없습니다'
     getMapLinks: function (cafeId) {
         const cafe = Cafes.getCafe(cafeId).cafe;
         const place = encodeURIComponent(cafe.name) + ',35.8886,128.6113';
         return {
-            view: 'https://map.kakao.com/link/map/' + place,
-            route: 'https://map.kakao.com/link/to/' + place
+            view: 'https://map.kakao.com/link/map/' + place
         };
     }
 };

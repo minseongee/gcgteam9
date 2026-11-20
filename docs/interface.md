@@ -55,7 +55,7 @@
 | `Cafes.getMenu(menuId)` | 메뉴 id | `MenuItem` | 없음 |
 | `Cafes.getMenuTypes()` | 없음 | `[{ id, name, tags: [{ id, label, oppositeId }] }]` 각 타입의 평가 버튼(공통 버튼 포함). `oppositeId`는 뜻이 반대인 버튼 id 또는 `null` | 없음 |
 | `Cafes.getMapPins()` (P1) | 없음 | `[{ cafeId, name, area, x, y }]` `x`, `y`는 지도 이미지 위 위치(%, 0~100). 지도 밖이면 목록에서 뺌 | 없음 |
-| `Cafes.getMapLinks(cafeId)` (P1) | 카페 id | `{ view: 'https://map.kakao.com/link/map/카페이름,위도,경도', route: 'https://map.kakao.com/link/to/카페이름,위도,경도' }` | 없음 |
+| `Cafes.getMapLinks(cafeId)` (P1) | 카페 id | `{ view: 'https://map.kakao.com/link/map/카페이름,위도,경도' }` | 없음 |
 
 - 정렬 `'rating'`: 평점 높은 순, 같으면 리뷰 많은 순, 리뷰 없는 메뉴는 맨 뒤.
 - 정렬 `'price'`: 가격 낮은 순. `'reviews'`: 리뷰 많은 순.

@@ -350,12 +350,11 @@ const Cafes = {
         return result;
     },
 
-    // 역할: 카카오맵 '지도에서 보기'·'길찾기' 링크를 만든다
-    //       view:  https://map.kakao.com/link/map/카페이름,위도,경도
-    //       route: https://map.kakao.com/link/to/카페이름,위도,경도
+    // 역할: 카카오맵 '지도에서 보기' 링크를 만든다
+    //       view: https://map.kakao.com/link/map/카페이름,위도,경도
     //       카페 이름은 encodeURIComponent로 감쌈
     // 입력: cafeId - 카페 id (숫자)
-    // 출력: { view, route }
+    // 출력: { view }
     // 오류: 없는 id면 '카페를 찾을 수 없습니다'
     getMapLinks: function (cafeId) {
         const cafe = Cafes.findById(DataStore.load('cafes'), cafeId);
@@ -364,8 +363,7 @@ const Cafes = {
         }
         const place = encodeURIComponent(cafe.name) + ',' + cafe.lat + ',' + cafe.lng;
         return {
-            view: 'https://map.kakao.com/link/map/' + place,
-            route: 'https://map.kakao.com/link/to/' + place
+            view: 'https://map.kakao.com/link/map/' + place
         };
     }
 };

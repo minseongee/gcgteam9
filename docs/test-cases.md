@@ -57,7 +57,7 @@
 | 21 | 리뷰 작성(평가 버튼) | `Cafes.getMenuTypes` | (경계) 반대 버튼 없는 타입·공통 버튼 | 디저트 버튼 id `[15, 16, 17, 18]`, 공통 버튼(17·18) oppositeId `null` | | |
 | 22 | 지도(P1) | `Cafes.getMapPins` | MAP_BOUNDS를 (36, 128)~(35, 129)로, 카페 1 좌표를 (35.5, 128.5)로 | 핀 1개 `{ cafeId: 1, name: '카페 A', area: 'campus', x: 50, y: 50 }` (좌표 0인 카페 2~5는 지도 밖이라 빠짐) | | |
 | 23 | 지도(P1) | `Cafes.getMapPins` | (경계) 위와 같고 카페 1을 지도 위쪽 밖 (37, 128.5)로 | 빈 배열 `[]` | | |
-| 24 | 카카오맵 링크(P1) | `Cafes.getMapLinks` | `(1)` | view `https://map.kakao.com/link/map/%EC%B9%B4%ED%8E%98%20A,0,0`, route는 `/link/to/`로 같은 값 | | |
+| 24 | 카카오맵 링크(P1) | `Cafes.getMapLinks` | `(1)` | `{ view: 'https://map.kakao.com/link/map/%EC%B9%B4%ED%8E%98%20A,0,0' }` (길찾기 링크 없음) | | |
 | 25 | 카카오맵 링크(P1) | `Cafes.getMapLinks` | (예외) `(999)` | 오류 '카페를 찾을 수 없습니다' | | |
 | 26 | 평가 집계 | `Reviews.getReviewSummary` | `(1)` 리뷰 3개(별점 4·5·3) | 평점 4.0, 리뷰 3개. tagStats 7개(0% 포함)가 percent 높은 순. 고소해요 67%, 가성비 좋아요 67%, 연해요 33%, 산미 0%. reviews 최신순 id `[3, 2, 1]`, 첫 리뷰 '예시회원3' · isSample true | | |
 | 27 | 평가 집계 | `Reviews.getReviewSummary` | (경계) 리뷰 없는 메뉴 `(7)` | 평점 `null`, 리뷰 0개, reviews `[]`, tagStats 7개 모두 0개·0% | | |

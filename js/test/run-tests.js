@@ -249,8 +249,7 @@
     });
     add(24, 'Cafes.getMapLinks', function () {
         same(Cafes.getMapLinks(1), {
-            view: 'https://map.kakao.com/link/map/%EC%B9%B4%ED%8E%98%20A,0,0',
-            route: 'https://map.kakao.com/link/to/%EC%B9%B4%ED%8E%98%20A,0,0'
+            view: 'https://map.kakao.com/link/map/%EC%B9%B4%ED%8E%98%20A,0,0'
         }, '링크');
     });
     add(25, 'Cafes.getMapLinks', function () {
