@@ -70,22 +70,15 @@
 
         const links = Cafes.getMapLinks(cafe.id);
         const buttons = el('div', 'cafe-map-buttons');
-        const view = el('a', 'btn btn-outline');
+        const view = el('a', 'btn btn-primary');
         view.href = links.view;
         view.target = '_blank';
         view.rel = 'noopener';
         view.appendChild(icon('pin', 18));
         view.appendChild(el('span', '', '카카오맵에서 보기'));
-        const route = el('a', 'btn btn-primary');
-        route.href = links.route;
-        route.target = '_blank';
-        route.rel = 'noopener';
-        route.appendChild(icon('arrow', 18));
-        route.appendChild(el('span', '', '길찾기'));
         buttons.appendChild(view);
-        buttons.appendChild(route);
         info.appendChild(buttons);
-        info.appendChild(el('p', 'muted small', '두 버튼 모두 카카오맵(앱 또는 모바일 웹)으로 이동해요.'));
+        info.appendChild(el('p', 'muted small', '카카오맵(앱 또는 모바일 웹)으로 이동해요.'));
         app.appendChild(info);
     }
 

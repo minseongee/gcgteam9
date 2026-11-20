@@ -130,7 +130,7 @@
         }
     }
 
-    // 역할: 화면 전체를 그린다 (검색창, 추천 바로가기, 목록 전환 버튼, 두 목록)
+    // 역할: 화면 전체를 그린다 (검색창, 목록 전환 버튼, 두 목록)
     // 입력: 없음
     // 출력: 없음
     function render() {
@@ -143,15 +143,6 @@
         search.appendChild(icon('search', 20));
         search.appendChild(el('span', '', '메뉴나 카페 이름으로 검색'));
         app.appendChild(search);
-
-        const banner = el('a', 'banner');
-        banner.href = 'recommend.html';
-        const bannerText = el('span', 'banner-text');
-        bannerText.appendChild(el('span', 'banner-title', '오늘 뭐 마시지?'));
-        bannerText.appendChild(el('span', 'banner-sub', '예산과 원하는 맛으로 추천받기'));
-        banner.appendChild(bannerText);
-        banner.appendChild(icon('arrow', 20));
-        app.appendChild(banner);
 
         const switcher = el('div', 'segmented');
         switcher.setAttribute('role', 'tablist');
