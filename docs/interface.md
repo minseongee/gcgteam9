@@ -129,8 +129,8 @@
 | `Auth.getCurrentUser()` | 없음 | `{ id, loginId, nickname, role }` 또는 `null` | 화면, 기능 모듈 |
 | `Auth.requireLogin()` | 없음 | 현재 회원 (없으면 오류) | 기능 모듈 |
 | `Auth.requireOwnerOf(cafeId)` | 카페 id | 현재 회원 (사장이 아니거나 남의 카페면 오류) | 기능 모듈 |
-| `DataStore.init()` | 없음 | 없음. 처음 실행이면 `SEED_DATA`를 localStorage에 복사. 고정 데이터(`menuTypes`, `evalTags`)와 카페 위도·경도는 매번 `SEED_DATA`로 다시 맞춤 | `storage.js`가 불러올 때 스스로 실행 |
-| `DataStore.syncCafeLocations()` | 없음 | 없음. 저장된 카페의 `lat`, `lng`를 `SEED_DATA` 값으로 덮어씀 (나머지 필드는 그대로) | `DataStore.init()` 안에서만 |
+| `DataStore.init()` | 없음 | 없음. 처음 실행이면 `SEED_DATA`를 localStorage에 복사. 고정 데이터(`menuTypes`, `evalTags`)와 카페 위도·경도·교내/근처는 매번 `SEED_DATA`로 다시 맞춤 | `storage.js`가 불러올 때 스스로 실행 |
+| `DataStore.syncCafeLocations()` | 없음 | 없음. 저장된 카페의 `lat`, `lng`, `area`를 `SEED_DATA` 값으로 덮어씀. `locationText`는 `DataStore.oldLocationTexts`의 예전 기본값 그대로일 때만 새 값으로 바꿈 (나머지 필드는 그대로) | `DataStore.init()` 안에서만 |
 | `DataStore.load(key)` | `data.md`의 키 이름 | 배열(복사본) | 기능 모듈, Auth |
 | `DataStore.save(key, list)` | 키, 배열 | 없음 | 기능 모듈, Auth |
 | `DataStore.nextId(key)` | 키 | 그 목록의 가장 큰 id + 1 | 기능 모듈 |

@@ -43,8 +43,13 @@ const DataStore = {
         localStorage.setItem(DataStore.prefix + 'initialized', 'true');
     },
 
-    // 역할: 저장된 카페의 위도·경도(lat, lng)를 data.js 값으로 다시 맞춘다
-    //       위도·경도는 data.js에서만 정하고 어떤 기능도 고치지 않으므로, data.js를 고치면 바로 지도에 반영되게 한다
+    // 2026-11-20에 data.js에서 고친 카페의 예전 위치 설명 (카페 id -> 예전 값)
+    // 저장된 값이 이것과 같으면 사장이 고치지 않은 것이므로 data.js의 새 값으로 바꾼다
+    oldLocationTexts: { 2: '생활관', 5: '경북대 인근' },
+
+    // 역할: 저장된 카페의 위도·경도(lat, lng)와 교내/근처(area)를 data.js 값으로 다시 맞춘다
+    //       이 셋은 data.js에서만 정하고 어떤 기능도 고치지 않으므로, data.js를 고치면 바로 지도·목록에 반영되게 한다
+    //       위치 설명은 oldLocationTexts의 예전 기본값 그대로일 때만 새 값으로 바꾼다
     //       (사장이 고친 이름·위치 설명·영업시간은 그대로 둔다)
     // 입력: 없음
     // 출력: 없음
@@ -56,6 +61,11 @@ const DataStore = {
                 if (SEED_DATA.cafes[k].id === cafes[i].id) {
                     cafes[i].lat = SEED_DATA.cafes[k].lat;
                     cafes[i].lng = SEED_DATA.cafes[k].lng;
+                    cafes[i].area = SEED_DATA.cafes[k].area;
+                    // 위치 설명은 사장이 고칠 수 있으므로, 예전 기본값 그대로일 때만 새 값으로 바꾼다
+                    if (cafes[i].locationText === DataStore.oldLocationTexts[cafes[i].id]) {
+                        cafes[i].locationText = SEED_DATA.cafes[k].locationText;
+                    }
                 }
             }
         }

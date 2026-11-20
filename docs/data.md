@@ -10,7 +10,7 @@
 - localStorage 키는 모두 `cafe9.` 으로 시작합니다. 값은 `JSON.stringify`한 배열입니다.
 - `cafe9.initialized`가 있으면 다시 복사하지 않습니다. `DataStore.reset()`은 `cafe9.`으로 시작하는 키를 모두 지우고 다시 복사합니다(시연 전 초기화).
 - 단, **고정 데이터**인 `menuTypes`와 `evalTags`는 `data.js`에서만 정하고 어떤 기능도 고치지 않으므로, 페이지를 열 때마다 `DataStore.init()`이 `data.js` 값으로 다시 덮어씁니다. 이 둘은 `data.js`를 고치면 바로 반영됩니다.
-- 카페의 **위도·경도(`lat`, `lng`)**도 같은 이유로 페이지를 열 때마다 `data.js` 값으로 다시 맞춥니다(`DataStore.syncCafeLocations`). 사장이 고친 이름·위치 설명·영업시간은 그대로 둡니다.
+- 카페의 **위도·경도(`lat`, `lng`)와 교내/근처(`area`)**도 같은 이유로 페이지를 열 때마다 `data.js` 값으로 다시 맞춥니다(`DataStore.syncCafeLocations`). 사장이 고친 이름·위치 설명·영업시간은 그대로 둡니다.
 - 그 밖의 데이터(카페·메뉴·리뷰 등)는 `data.js`를 고친 뒤 콘솔에서 `DataStore.reset()`을 실행해야 바뀐 내용이 보입니다.
 
 | 키 (`DataStore.load` 에 넘기는 이름) | localStorage 키 | 처음 들어가는 곳 | 내용 |
