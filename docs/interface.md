@@ -118,9 +118,14 @@
 | `Account.updateCafe(cafeId, info)` (P1) | `info`: `{ name, locationText, openHours }`. `name`은 앞뒤 공백을 지운 뒤 1자 이상(비면 오류), `locationText`·`openHours`는 비어도 됨 | 수정된 `CafeItem` | 사장, 본인 카페만 |
 | `Account.addMenu(cafeId, menu)` | `menu`: `{ name, typeId, price, options }` | 새 `MenuItem` | 사장, 본인 카페만 |
 | `Account.updatePrice(menuId, price)` | `price`: 0보다 큰 정수 | 수정된 `MenuItem` | 사장, 본인 카페 메뉴만 |
+| `Account.updateMenu(menuId, info)` | `info`: `{ name, typeId }`. `name`은 앞뒤 공백을 지운 뒤 1자 이상, `typeId`는 있는 메뉴 타입 id | 수정된 `MenuItem` | 사장, 본인 카페 메뉴만 |
+| `Account.deleteMenu(menuId)` | 메뉴 id | 지우기 전의 `MenuItem` | 사장, 본인 카페 메뉴만 |
 
 - 비밀번호는 암호화 없이 저장합니다(과제용). 화면에 "실제 비밀번호를 쓰지 마세요" 안내를 둡니다.
 - 사장 계정은 회원가입으로 만들지 않고 `data.js`에 미리 넣어 둡니다.
+- `updateMenu`로 **타입을 바꾸면** 그 메뉴 리뷰에 남은 예전 타입 평가 버튼을 지우고(공통 버튼은 남김), 비교함에서 그 메뉴를 뺍니다. 비교함은 같은 타입끼리만 담을 수 있기 때문입니다.
+- `deleteMenu`는 그 메뉴의 **리뷰, 모든 회원의 메뉴 즐겨찾기, 비교함 항목도 함께 지웁니다.** 남겨 두면 마이페이지·비교 화면에서 '메뉴를 찾을 수 없습니다' 오류가 납니다.
+- `updatePrice`, `updateMenu`, `deleteMenu`의 확인 순서: 메뉴가 있는지 → 로그인·본인 카페인지 → 입력값.
 
 ## 6. Auth, DataStore — 공통 (`js/auth.js`, `js/storage.js`)
 
@@ -160,7 +165,7 @@
 | 메뉴 타입에 없는 평가 버튼 | `이 메뉴에서 고를 수 없는 평가 버튼입니다` |
 | 비교 개수 | `2~4개 메뉴를 골라 주세요` |
 | 비교 타입 다름 | `같은 종류의 메뉴끼리만 비교할 수 있어요` |
-| 추천 타입 없음 | `메뉴 타입을 골라 주세요` |
+| 추천 타입 없음 / 사장 메뉴 추가·수정에서 없는 타입 | `메뉴 타입을 골라 주세요` |
 | 추천 버튼 4개 이상 | `원하는 맛은 3개까지 고를 수 있어요` |
 | 반대 평가 버튼을 함께 고름 (리뷰·추천) | `서로 반대되는 평가 버튼은 함께 고를 수 없어요` |
 | 아이디 형식 | `아이디는 영문·숫자 4~12자로 정해 주세요` |
@@ -189,4 +194,4 @@
 | 지도 `map.html` | `Cafes.getMapPins` |
 | 로그인 `login.html` | `Account.login`, `Account.signup` |
 | 마이 `mypage.html` | `Auth.getCurrentUser`, `Account.getFavorites`, `Account.getMyCafe`, `Reviews.getMyReviews`, `Reviews.deleteReview`, `Account.logout` |
-| 사장 관리 `owner.html` | `Auth.getCurrentUser`, `Account.getMyCafe`, `Cafes.getCafe`, `Cafes.getMenuTypes`, `Account.updateCafe`, `Account.addMenu`, `Account.updatePrice` |
+| 사장 관리 `owner.html` | `Auth.getCurrentUser`, `Account.getMyCafe`, `Cafes.getCafe`, `Cafes.getMenuTypes`, `Account.updateCafe`, `Account.addMenu`, `Account.updatePrice`, `Account.updateMenu`, `Account.deleteMenu` |

@@ -218,6 +218,94 @@ const Account = {
     //       '가격은 0보다 큰 숫자로 써 주세요'
     updatePrice: function (menuId, price) {
         const menus = DataStore.load('menus');
+        const target = Account.findMyMenu(menus, menuId);
+        if (!Number.isInteger(price) || price <= 0) {
+            throw new Error('가격은 0보다 큰 숫자로 써 주세요');
+        }
+        target.price = price;
+        DataStore.save('menus', menus);
+        return Cafes.getMenu(menuId);
+    },
+
+    // 역할: 내 카페 메뉴의 이름과 타입을 바꾼다
+    //       타입이 바뀌면 그 메뉴 리뷰의 예전 타입 평가 버튼을 지우고(공통 버튼은 남김) 비교함에서 뺀다
+    // 입력: menuId - 메뉴 id, info - { name, typeId }
+    //       name은 앞뒤 공백을 잘라 저장, typeId는 있는 메뉴 타입 id
+    // 출력: 수정된 MenuItem
+    // 오류: '메뉴를 찾을 수 없습니다' / '로그인이 필요합니다' / '이 카페를 관리할 권한이 없습니다'
+    //       '메뉴 이름을 입력해 주세요' / '메뉴 타입을 골라 주세요'
+    updateMenu: function (menuId, info) {
+        const menus = DataStore.load('menus');
+        const target = Account.findMyMenu(menus, menuId);
+        if (typeof info.name !== 'string' || info.name.trim() === '') {
+            throw new Error('메뉴 이름을 입력해 주세요');
+        }
+        const menuTypes = DataStore.load('menuTypes');
+        let typeFound = false;
+        for (let i = 0; i < menuTypes.length; i++) {
+            if (menuTypes[i].id === info.typeId) {
+                typeFound = true;
+            }
+        }
+        if (!typeFound) {
+            throw new Error('메뉴 타입을 골라 주세요');
+        }
+
+        const typeChanged = target.typeId !== info.typeId;
+        target.name = info.name.trim();
+        target.typeId = info.typeId;
+        DataStore.save('menus', menus);
+
+        if (typeChanged) {
+            // 새 타입 버튼이나 공통 버튼(typeId null)만 남긴다
+            const evalTags = DataStore.load('evalTags');
+            const allowedIds = [];
+            for (let i = 0; i < evalTags.length; i++) {
+                if (evalTags[i].typeId === null || evalTags[i].typeId === info.typeId) {
+                    allowedIds.push(evalTags[i].id);
+                }
+            }
+            const reviews = DataStore.load('reviews');
+            for (let i = 0; i < reviews.length; i++) {
+                if (reviews[i].menuId === menuId) {
+                    reviews[i].tagIds = reviews[i].tagIds.filter(function (tagId) {
+                        return allowedIds.indexOf(tagId) !== -1;
+                    });
+                }
+            }
+            DataStore.save('reviews', reviews);
+            Compare.removeFromBox(menuId);
+        }
+        return Cafes.getMenu(menuId);
+    },
+
+    // 역할: 내 카페 메뉴를 지운다. 그 메뉴의 리뷰, 모든 회원의 메뉴 즐겨찾기, 비교함 항목도 함께 지운다
+    // 입력: menuId - 메뉴 id
+    // 출력: 지우기 전의 MenuItem
+    // 오류: '메뉴를 찾을 수 없습니다' / '로그인이 필요합니다' / '이 카페를 관리할 권한이 없습니다'
+    deleteMenu: function (menuId) {
+        const menus = DataStore.load('menus');
+        Account.findMyMenu(menus, menuId);
+        const deleted = Cafes.getMenu(menuId);
+
+        DataStore.save('menus', menus.filter(function (menu) {
+            return menu.id !== menuId;
+        }));
+        DataStore.save('reviews', DataStore.load('reviews').filter(function (review) {
+            return review.menuId !== menuId;
+        }));
+        DataStore.save('favorites', DataStore.load('favorites').filter(function (fav) {
+            return !(fav.targetType === 'menu' && fav.targetId === menuId);
+        }));
+        Compare.removeFromBox(menuId);
+        return deleted;
+    },
+
+    // 역할: 메뉴 목록에서 id로 메뉴를 찾고, 로그인한 사장의 카페 메뉴인지 확인한다 (Account 안에서만 사용)
+    // 입력: menus - DataStore.load('menus')로 읽은 배열, menuId - 메뉴 id
+    // 출력: menus 안의 그 메뉴 객체 (고치면 menus가 바뀌므로 저장할 때 menus를 save)
+    // 오류: '메뉴를 찾을 수 없습니다' / '로그인이 필요합니다' / '이 카페를 관리할 권한이 없습니다'
+    findMyMenu: function (menus, menuId) {
         let target = null;
         for (let i = 0; i < menus.length; i++) {
             if (menus[i].id === menuId) {
@@ -228,11 +316,6 @@ const Account = {
             throw new Error('메뉴를 찾을 수 없습니다');
         }
         Auth.requireOwnerOf(target.cafeId);
-        if (!Number.isInteger(price) || price <= 0) {
-            throw new Error('가격은 0보다 큰 숫자로 써 주세요');
-        }
-        target.price = price;
-        DataStore.save('menus', menus);
-        return Cafes.getMenu(menuId);
+        return target;
     }
 };

@@ -34,10 +34,19 @@ a{color:#6B3B1F}a:hover{color:#4A2814}
 <section style="display: flex; flex-direction: column; gap: 10px">
 <div style="display: flex; justify-content: space-between; align-items: baseline">
 <h2 style="margin: 0; font-size: 16px; font-weight: 700">메뉴 · 가격</h2>
-<span style="font-size: 12px; color: #6B625A">가격을 고치고 '변경'</span>
+<span style="font-size: 12px; color: #6B625A">메뉴 이름을 누르면 수정·삭제</span>
 </div>
 <div style="background: #FFFFFF; border: 1px solid #E6DED4; border-radius: 14px; overflow: hidden">
-<div class="mrow" style="border-top: 0"><span style="display: flex; flex-direction: column"><span style="font-size: 14px; font-weight: 500">아이스 아메리카노</span><span style="font-size: 12px; color: #6B625A">커피</span></span><label style="position: relative"><span style="position: absolute; left: -9999px">아이스 아메리카노 가격</span><input type="number" value="2500"></label><button type="button" class="save">변경</button></div>
+<div class="mrow" style="border-top: 0"><button type="button" aria-expanded="true" style="display: flex; flex-direction: column; min-height: 44px; justify-content: center; padding: 0; border: 0; background: none; font-family: inherit; text-align: left; color: #1E1A16"><span style="font-size: 14px; font-weight: 500; color: #6B3B1F; text-decoration: underline; text-decoration-color: #E6DED4; text-underline-offset: 3px">아이스 아메리카노</span><span style="font-size: 12px; color: #6B625A">커피</span></button><label style="position: relative"><span style="position: absolute; left: -9999px">아이스 아메리카노 가격</span><input type="number" value="2500"></label><button type="button" class="save">변경</button></div>
+<div style="display: flex; flex-direction: column; gap: 10px; padding: 12px 16px 16px; border-top: 1px solid #EFE8DF; background: #F3E8DF">
+<label class="field">메뉴 이름<input type="text" value="아이스 아메리카노"></label>
+<label class="field">메뉴 타입<select><option selected>커피</option><option>논커피 라떼</option><option>차</option><option>에이드·스무디</option><option>디저트</option></select></label>
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
+<button type="button" class="save" style="height: 44px; border-radius: 12px; font-size: 14px">삭제</button>
+<button type="button" class="save" style="height: 44px; border-radius: 12px; font-size: 14px">취소</button>
+<button type="button" style="height: 44px; border-radius: 12px; border: 0; background: #6B3B1F; color: #FFFFFF; font-family: inherit; font-size: 14px; font-weight: 500">저장</button>
+</div>
+</div>
 <div class="mrow"><span style="display: flex; flex-direction: column"><span style="font-size: 14px; font-weight: 500">카페라떼</span><span style="font-size: 12px; color: #6B625A">커피</span></span><label style="position: relative"><span style="position: absolute; left: -9999px">카페라떼 가격</span><input type="number" value="3000"></label><button type="button" class="save">변경</button></div>
 <div class="mrow"><span style="display: flex; flex-direction: column"><span style="font-size: 14px; font-weight: 500">초코 라떼</span><span style="font-size: 12px; color: #6B625A">논커피 라떼</span></span><label style="position: relative"><span style="position: absolute; left: -9999px">초코 라떼 가격</span><input type="number" value="3300"></label><button type="button" class="save">변경</button></div>
 </div>

@@ -75,5 +75,24 @@ const Account = {
         const menu = Cafes.getMenu(menuId);
         menu.price = price;
         return menu;
+    },
+
+    // 역할: 메뉴 이름·타입 변경 (가짜: 저장 안 함) / 입력: menuId, info { name, typeId }
+    // 출력: info를 덮어쓴 MenuItem / 오류: '메뉴를 찾을 수 없습니다'
+    updateMenu: function (menuId, info) {
+        const menu = Cafes.getMenu(menuId);
+        const type = Cafes.getMenuTypes().find(function (item) {
+            return item.id === info.typeId;
+        });
+        menu.name = info.name;
+        menu.typeId = info.typeId;
+        menu.typeName = type === undefined ? '' : type.name;
+        return menu;
+    },
+
+    // 역할: 메뉴 삭제 (가짜: 저장 안 함) / 입력: menuId / 출력: 그 MenuItem
+    // 오류: '메뉴를 찾을 수 없습니다'
+    deleteMenu: function (menuId) {
+        return Cafes.getMenu(menuId);
     }
 };

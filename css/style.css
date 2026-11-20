@@ -1211,6 +1211,49 @@ a.cafe-card:focus-visible {
     font-weight: 500;
 }
 
+/* 메뉴 이름 (누르면 수정 칸이 펼쳐짐) */
+.owner-menu-button {
+    align-self: stretch;
+    justify-content: center;
+    min-height: 44px;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--text);
+    text-align: left;
+}
+
+.owner-menu-button .owner-menu-name {
+    text-decoration: underline;
+    text-decoration-color: var(--line);
+    text-underline-offset: 3px;
+}
+
+.owner-menu-button[aria-expanded="true"] .owner-menu-name {
+    color: var(--accent);
+}
+
+/* 메뉴 수정 칸 */
+.owner-edit {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 12px 16px 16px;
+    border-top: 1px solid var(--line-soft);
+    background: var(--accent-soft);
+}
+
+.owner-edit-actions {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+}
+
+.owner-edit-actions .btn {
+    min-height: 44px;
+    padding: 0 8px;
+}
+
 .owner-price .input {
     padding: 0 8px;
     font-size: 14px;

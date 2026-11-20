@@ -825,6 +825,114 @@
         same([DataStore.load('reviews').length, DataStore.loadSession()], [20, null], '리뷰 수·세션');
     });
 
+    // ───────── D. Account (사장 메뉴 이름·타입 변경, 삭제) ─────────
+
+    // 역할: 저장된 리뷰 중 그 메뉴 리뷰의 tagIds를 리뷰 id 순서대로 모은다
+    // 입력: menuId - 메뉴 id
+    // 출력: tagIds 배열의 배열
+    function tagIdsOfMenu(menuId) {
+        return DataStore.load('reviews').filter(function (review) {
+            return review.menuId === menuId;
+        }).map(function (review) {
+            return review.tagIds;
+        });
+    }
+
+    add(126, 'Account.updateMenu', function () {
+        loginAs('ownera');
+        Compare.addToBox(1);
+        Compare.addToBox(2);
+        const menu = Account.updateMenu(2, { name: '  카페 라떼 ', typeId: 1 });
+        same([menu.name, menu.typeName], ['카페 라떼', '커피'], '고친 메뉴');
+        same(Cafes.getMenu(2).name, '카페 라떼', '다시 읽은 이름');
+        same(tagIdsOfMenu(2), [[2], [2, 17]], '타입이 같으면 리뷰 버튼 그대로');
+        same(Compare.getBox(), [1, 2], '타입이 같으면 비교함 그대로');
+    });
+    add(127, 'Account.updateMenu', function () {
+        loginAs('ownera');
+        Compare.addToBox(1);
+        Compare.addToBox(2);
+        const menu = Account.updateMenu(1, { name: '아메리카노', typeId: 2 });
+        same([menu.typeId, menu.typeName], [2, '논커피 라떼'], '바뀐 타입');
+        same(tagIdsOfMenu(1), [[18], [18], []], '예전 타입 버튼은 지우고 공통 버튼만 남김');
+        same(Compare.getBox(), [2], '비교함에서 빠짐');
+        same(Reviews.getReviewSummary(1).reviewCount, 3, '리뷰는 그대로 3개');
+    });
+    add(128, 'Account.updateMenu', function () {
+        loginAs('ownera');
+        throws(function () {
+            Account.updateMenu(1, { name: '   ', typeId: 1 });
+        }, '메뉴 이름을 입력해 주세요');
+    });
+    add(129, 'Account.updateMenu', function () {
+        loginAs('ownera');
+        throws(function () {
+            Account.updateMenu(1, { name: '아메리카노', typeId: 99 });
+        }, '메뉴 타입을 골라 주세요');
+    });
+    add(130, 'Account.updateMenu', function () {
+        loginAs('ownerb');
+        throws(function () {
+            Account.updateMenu(1, { name: '아메리카노', typeId: 1 });
+        }, '이 카페를 관리할 권한이 없습니다');
+    });
+    add(131, 'Account.updateMenu', function () {
+        throws(function () {
+            Account.updateMenu(1, { name: '아메리카노', typeId: 1 });
+        }, '로그인이 필요합니다');
+    });
+    add(132, 'Account.updateMenu', function () {
+        loginAs('ownera');
+        throws(function () {
+            Account.updateMenu(999, { name: '아메리카노', typeId: 1 });
+        }, '메뉴를 찾을 수 없습니다');
+    });
+    add(133, 'Account.deleteMenu', function () {
+        loginAs('sample1');
+        Account.toggleFavorite('menu', 1);
+        Account.toggleFavorite('menu', 3);
+        Compare.addToBox(1);
+        Compare.addToBox(2);
+        loginAs('ownera');
+        same(Account.deleteMenu(1).name, '아메리카노', '지운 메뉴');
+        throws(function () {
+            Cafes.getMenu(1);
+        }, '메뉴를 찾을 수 없습니다');
+        same([DataStore.load('reviews').length, tagIdsOfMenu(1).length], [17, 0], '리뷰 수, 지운 메뉴의 리뷰 수');
+        same(Compare.getBox(), [2], '비교함');
+        same(Cafes.getCafe(1).cafe.menuCount, 4, '카페 A 메뉴 수');
+        loginAs('sample1');
+        const favMenuIds = Account.getFavorites().menus.map(function (menu) {
+            return menu.id;
+        });
+        same(favMenuIds, [3], '즐겨찾기에서 빠짐');
+        same(Reviews.getMyReviews().length, 6, '내 리뷰 목록이 오류 없이 나옴');
+    });
+    add(134, 'Account.deleteMenu', function () {
+        loginAs('ownerb');
+        throws(function () {
+            Account.deleteMenu(1);
+        }, '이 카페를 관리할 권한이 없습니다');
+        same(DataStore.load('menus').length, 25, '메뉴 그대로');
+    });
+    add(135, 'Account.deleteMenu', function () {
+        loginAs('sample1');
+        throws(function () {
+            Account.deleteMenu(1);
+        }, '이 카페를 관리할 권한이 없습니다');
+    });
+    add(136, 'Account.deleteMenu', function () {
+        throws(function () {
+            Account.deleteMenu(1);
+        }, '로그인이 필요합니다');
+    });
+    add(137, 'Account.deleteMenu', function () {
+        loginAs('ownera');
+        throws(function () {
+            Account.deleteMenu(999);
+        }, '메뉴를 찾을 수 없습니다');
+    });
+
     // ───────── 테스트 전용 데이터 ─────────
 
     // 처음 만든 예시 데이터. 아래 기대값은 모두 이 데이터 기준이다.
